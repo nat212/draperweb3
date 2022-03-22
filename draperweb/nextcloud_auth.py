@@ -7,7 +7,7 @@ class NextcloudOAuth2(BaseOAuth2):
 
     name = "nextcloud"
     AUTHORIZATION_URL = (
-        f"{settings.DRAPERWEB_BASE_URL}index.php/apps/oauth2/authorize"
+        f"{settings.DRAPERWEB_BASE_URL}/index.php/apps/oauth2/authorize"
     )
     ACCESS_TOKEN_URL = (
         f"{settings.DRAPERWEB_BASE_URL}/index.php/apps/oauth2/api/v1/token"

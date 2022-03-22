@@ -29,12 +29,7 @@ SECRET_KEY = os.getenv(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DRAPERWEB_MODE", "development") != "production"
 
-ALLOWED_HOSTS = [
-    "10.0.2.*",
-    "localhost",
-    "*.draper.net.za",
-    "draper.net.za",
-]
+ALLOWED_HOSTS = []
 
 # Application definition
 
