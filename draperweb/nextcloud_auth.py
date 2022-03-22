@@ -1,3 +1,4 @@
+from django.conf import settings
 from social_core.backends.oauth import BaseOAuth2
 
 
@@ -6,12 +7,14 @@ class NextcloudOAuth2(BaseOAuth2):
 
     name = "nextcloud"
     AUTHORIZATION_URL = (
-        "https://box.draper.net.za/cloud/index.php/apps/oauth2/authorize"
+        f"{settings.DRAPERWEB_BASE_URL}index.php/apps/oauth2/authorize"
     )
     ACCESS_TOKEN_URL = (
-        "https://box.draper.net.za/cloud/index.php/apps/oauth2/api/v1/token"
+        f"{settings.DRAPERWEB_BASE_URL}/index.php/apps/oauth2/api/v1/token"
     )
     ACCESS_TOKEN_METHOD = "POST"
+    REFRESH_TOKEN_URL = f"{settings.DRAPERWEB_BASE_URL}/index.php/apps/oauth2/authorize"
+    REFRESH_TOKEN_METHOD = "POST"
     ID_KEY = "user_id"
 
     def get_user_details(self, response):
@@ -23,7 +26,7 @@ class NextcloudOAuth2(BaseOAuth2):
         """Loads user data from service"""
         user_id = response["user_id"]
         url = (
-            "https://box.draper.net.za/cloud/ocs/v2.php"
+            f"{settings.DRAPERWEB_BASE_URL}/ocs/v2.php"
             f"/cloud/users/{user_id}?format=json"
         )
         headers = {"Authorization": f"Bearer {access_token}"}

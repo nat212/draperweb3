@@ -16,11 +16,11 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+# noinspection SpellCheckingInspection
 SECRET_KEY = os.getenv(
     "DRAPERWEB_SECRET",
     "django-insecure-45xoqd4_sg)t8k-mthd1)et(fwag#_h2djih4vy1x*&8okt=$c",
@@ -29,8 +29,12 @@ SECRET_KEY = os.getenv(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DRAPERWEB_MODE", "development") != "production"
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = [
+    "localhost",
+    "www.draper.net.za",
+    "web.draper.net.za",
+    "draper.net.za",
+]
 
 # Application definition
 
@@ -45,6 +49,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "draperweb.budgets",
     "social_django",
+    "rest_framework_filters",
 ]
 
 MIDDLEWARE = [
@@ -77,10 +82,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "draperweb.wsgi.application"
 
-
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
+# noinspection SpellCheckingInspection
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
@@ -91,7 +96,6 @@ DATABASES = {
         "PORT": os.getenv("DRAPERWEB_DB_PORT", "5432"),
     },
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -114,7 +118,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
@@ -126,7 +129,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
@@ -137,16 +139,14 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-
 REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 10,
     "DEFAULT_FILTER_BACKENDS": [
-        "django_filters.rest_framework.DjangoFilterBackend",
+        "rest_framework_filters.backends.RestFrameworkFilterBackend",
         "rest_framework.filters.SearchFilter",
     ],
 }
-
 
 SOCIAL_AUTH_JSONFIELD_ENABLED = True
 
@@ -156,3 +156,5 @@ SOCIAL_AUTH_NAMESPACE = "social"
 
 SOCIAL_AUTH_NEXTCLOUD_KEY = os.getenv("SOCIAL_AUTH_NEXTCLOUD_KEY")
 SOCIAL_AUTH_NEXTCLOUD_SECRET = os.getenv("SOCIAL_AUTH_NEXTCLOUD_SECRET")
+
+DRAPERWEB_BASE_URL = os.getenv("DRAPERWEB_BASE_URL", "https://box.draper.net.za/cloud")

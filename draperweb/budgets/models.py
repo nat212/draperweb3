@@ -1,5 +1,7 @@
 from __future__ import annotations
+
 from typing import Dict, List
+
 from django.db import models
 
 
@@ -40,12 +42,24 @@ class BudgetColumn(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def get_total_expenses(self) -> float:
+        """Get the total expenses of all items in this column."""
         items = self.items.filter(amount__lt=0)
         return sum([abs(item.amount) for item in items]) or 0
 
     def get_total_income(self) -> float:
+        """Get the total income of all items in this column."""
         items = self.items.filter(amount__gt=0)
         return sum([abs(item.amount) for item in items]) or 0
+
+    def get_category_rundown(self) -> Dict[str, float]:
+        """Get a breakdown of expenses grouped by category."""
+        items = self.items.filter(amount__lt=0)
+        categories = {item.category for item in items if item.category}
+        resp = {}
+        total_amount = sum(abs(item.amount) for item in items)
+        for category in categories:
+            resp[category.name] = sum(abs(item.amount) for item in items if item.category == category) / total_amount
+        return resp
 
     def __str__(self) -> str:
         return f"{self.name} ({self.budget.name})"
@@ -61,7 +75,7 @@ class BudgetItem(models.Model):
         BudgetColumn, on_delete=models.CASCADE, related_name="items"
     )
     created_at = models.DateTimeField(auto_now_add=True)
-    amount = models.FloatField(default=0.0, blank=False)
+    amount = models.FloatField(default=0.0, blank=False, null=False)
 
     def __str__(self) -> str:
         return f"{self.name} ({self.column.name}, {self.column.budget.name})"
