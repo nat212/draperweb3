@@ -15,6 +15,7 @@ django-guardian = "*"
 psycopg2-binary = "*"
 social-auth-app-django = "*"
 djangorestframework-filters = "==1.0.0.dev2"
+django-crispy-forms = "*"
 
 [dev-packages]
 flake8 = "*"
