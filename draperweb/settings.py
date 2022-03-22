@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -20,10 +21,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-45xoqd4_sg)t8k-mthd1)et(fwag#_h2djih4vy1x*&8okt=$c"
+SECRET_KEY = os.getenv(
+    "DRAPERWEB_SECRET",
+    "django-insecure-45xoqd4_sg)t8k-mthd1)et(fwag#_h2djih4vy1x*&8okt=$c",
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DRAPERWEB_MODE", "development") != "production"
 
 ALLOWED_HOSTS = []
 
@@ -40,6 +44,7 @@ INSTALLED_APPS = [
     "django_filters",
     "rest_framework",
     "draperweb.budgets",
+    "social_django",
 ]
 
 MIDDLEWARE = [
@@ -79,11 +84,11 @@ WSGI_APPLICATION = "draperweb.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "draperweb",
-        "USER": "postgres",
-        "PASSWORD": "masterkey",
-        "HOST": "127.0.0.1",
-        "PORT": "5432",
+        "NAME": os.getenv("DRAPERWEB_DB_NAME", "draperweb"),
+        "USER": os.getenv("DRAPERWEB_DB_USER", "postgres"),
+        "PASSWORD": os.getenv("DRAPERWEB_DB_PASSWORD", "masterkey"),
+        "HOST": os.getenv("DRAPERWEB_DB_HOST", "localhost"),
+        "PORT": os.getenv("DRAPERWEB_DB_PORT", "5432"),
     },
 }
 
@@ -141,3 +146,13 @@ REST_FRAMEWORK = {
         "rest_framework.filters.SearchFilter",
     ],
 }
+
+
+SOCIAL_AUTH_JSONFIELD_ENABLED = True
+
+AUTHENTICATION_BACKENDS = ("draperweb.nextcloud_auth.NextcloudOAuth2",)
+
+SOCIAL_AUTH_NAMESPACE = "social"
+
+SOCIAL_AUTH_NEXTCLOUD_KEY = os.getenv("SOCIAL_AUTH_NEXTCLOUD_KEY")
+SOCIAL_AUTH_NEXTCLOUD_SECRET = os.getenv("SOCIAL_AUTH_NEXTCLOUD_SECRET")

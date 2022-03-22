@@ -1,4 +1,7 @@
 from rest_framework import permissions, viewsets
+from rest_framework.decorators import action
+from rest_framework.request import Request
+from rest_framework.response import Response
 
 from draperweb.budgets.models import Budget, BudgetColumn, BudgetItem, Category
 from draperweb.budgets.serializers import (
@@ -8,16 +11,13 @@ from draperweb.budgets.serializers import (
     BudgetSerializer,
     CategorySerializer,
 )
-from rest_framework.decorators import action
-from rest_framework.request import Request
-from rest_framework.response import Response
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     permission_classes = [permissions.IsAuthenticated]
-    search_fields = ["name", "description"]
+    search_fields = ["name", "description", "icon"]
 
 
 class BudgetViewSet(viewsets.ModelViewSet):
@@ -32,8 +32,9 @@ class BudgetViewSet(viewsets.ModelViewSet):
         methods=["POST"],
         url_path="import",
         url_name="import",
+        serializer_class=BudgetImportSerializer,
     )
-    def import_budget(self, request: Request, *args, **kwargs):
+    def import_columns(self, request: Request, *args, **kwargs):
         budget: Budget = self.get_object()
         serializer = BudgetImportSerializer(data=request.data)
         if not serializer.is_valid():
