@@ -5,12 +5,17 @@ import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ServiceWorkerModule} from '@angular/service-worker';
 import {environment} from '../environments/environment';
+import {ButtonsModule} from "ngx-bootstrap/buttons";
+import {AppRoutingModule} from "./app-routing.module";
+import {LoginComponent} from './pages/login/login.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LoginComponent
   ],
   imports: [
+    AppRoutingModule,
     BrowserModule,
     BrowserAnimationsModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
@@ -18,7 +23,8 @@ import {environment} from '../environments/environment';
       // Register the ServiceWorker as soon as the application is stable
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000'
-    })
+    }),
+    ButtonsModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent]
