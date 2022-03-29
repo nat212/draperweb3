@@ -1,7 +1,10 @@
 from django.urls import include, path
 
+from .views import authenticated
+
 urlpatterns = [
-    path("budgets/", include("draperweb.budgets.urls")),
-    path("api-auth/", include("rest_framework.urls")),
-    path('', include('social_django.urls', namespace="social")),
+    path("api/budgets/", include("draperweb.budgets.urls")),
+    path("api/auth/authenticated/", authenticated),
+    path("api/auth/", include("rest_framework.urls")),
+    path("api/social/", include("social_django.urls", namespace="api/social")),
 ]

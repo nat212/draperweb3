@@ -17,11 +17,21 @@ class BudgetSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Budget
-        fields = ("url", "id", "name", "start_date", "end_date", "columns", "import_columns")
+        fields = (
+            "url",
+            "id",
+            "name",
+            "start_date",
+            "end_date",
+            "columns",
+            "import_columns",
+        )
 
 
 class BudgetImportSerializer(serializers.BaseSerializer):
-    budget = serializers.HyperlinkedRelatedField(queryset=Budget.objects.all(), view_name="budget-detail")
+    budget = serializers.HyperlinkedRelatedField(
+        queryset=Budget.objects.all(), view_name="budget-detail"
+    )
     columns = serializers.ListField(child=serializers.IntegerField())
     items = serializers.DictField(
         child=serializers.ListField(child=serializers.IntegerField())
@@ -41,7 +51,9 @@ class BudgetColumnSerializer(serializers.HyperlinkedModelSerializer):
         view_name="budgetcolumn-summary", read_only=True
     )
 
-    breakdown = serializers.HyperlinkedIdentityField(view_name="budgetcolumn-breakdown", read_only=True)
+    breakdown = serializers.HyperlinkedIdentityField(
+        view_name="budgetcolumn-breakdown", read_only=True
+    )
 
     class Meta:
         model = BudgetColumn

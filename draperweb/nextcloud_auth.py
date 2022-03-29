@@ -6,9 +6,7 @@ class NextcloudOAuth2(BaseOAuth2):
     """Nextcloud OAuth authentication backend"""
 
     name = "nextcloud"
-    AUTHORIZATION_URL = (
-        f"{settings.DRAPERWEB_BASE_URL}/index.php/apps/oauth2/authorize"
-    )
+    AUTHORIZATION_URL = f"{settings.DRAPERWEB_BASE_URL}/index.php/apps/oauth2/authorize"
     ACCESS_TOKEN_URL = (
         f"{settings.DRAPERWEB_BASE_URL}/index.php/apps/oauth2/api/v1/token"
     )
@@ -20,7 +18,7 @@ class NextcloudOAuth2(BaseOAuth2):
     def get_user_details(self, response):
         """Return user details from Nextcloud account"""
         data = response["ocs"]["data"]
-        return {"username": data.get('id'), "email": data.get('email')}
+        return {"username": data.get("id"), "email": data.get("email")}
 
     def user_data(self, access_token: str, *args, response: dict = None, **kwargs):
         """Loads user data from service"""

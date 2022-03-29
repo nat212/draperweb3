@@ -16,8 +16,8 @@ class Category(models.Model):
 
 class Budget(models.Model):
     name = models.TextField()
-    start_date = models.DateField(blank=True)
-    end_date = models.DateField(blank=True)
+    start_date = models.DateField(blank=True, null=True)
+    end_date = models.DateField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def import_columns(
@@ -58,7 +58,10 @@ class BudgetColumn(models.Model):
         resp = {}
         total_amount = sum(abs(item.amount) for item in items)
         for category in categories:
-            resp[category.name] = sum(abs(item.amount) for item in items if item.category == category) / total_amount
+            resp[category.name] = (
+                sum(abs(item.amount) for item in items if item.category == category)
+                / total_amount
+            )
         return resp
 
     def __str__(self) -> str:

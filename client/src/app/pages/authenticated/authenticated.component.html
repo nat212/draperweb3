@@ -1,0 +1,83 @@
+<div class="container-fluid main-page">
+  <div class="row">
+    <div
+      class="col-lg-2 p-3 bg-white dw-nav-rail position-sticky top-0 d-none d-lg-block"
+      style="height: 100vh"
+    >
+      <h5 class="mb-4">DraperWeb</h5>
+      <nav class="nav-pills flex-column">
+        <a
+          *ngFor="let link of navLinks"
+          [routerLink]="link.path"
+          class="nav-link"
+          routerLinkActive="active"
+          #rla="routerLinkActive"
+          [attr.aria-current]="rla.isActive ? 'page' : undefined"
+        >
+          <i class="bi-{{ link.icon }}"></i> {{ link.label }}
+        </a>
+      </nav>
+    </div>
+    <div class="col-lg-10 col-12">
+      <div
+        class="offcanvas offcanvas-start d-block d-lg-none"
+        tabindex="-1"
+        id="drawer"
+        #drawer
+      >
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title">DraperWeb</h5>
+          <button
+            type="button"
+            class="btn-close text-reset"
+            (click)="hideDrawer()"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="offcanvas-body">
+          <nav class="nav-pills flex-column">
+            <a
+              *ngFor="let link of navLinks"
+              [routerLink]="link.path"
+              class="nav-link"
+              routerLinkActive="active"
+              #rla="routerLinkActive"
+              [attr.aria-current]="rla.isActive ? 'page' : undefined"
+            >
+              <i class="bi-{{ link.icon }}"></i> {{ link.label }}
+            </a>
+          </nav>
+        </div>
+      </div>
+      <div class="row mb-5 position-sticky top-0 search-row bg-body pt-3">
+        <div class="col-2 d-lg-none align-items-center justify-content-center">
+          <button
+            class="btn"
+            type="button"
+            aria-controls="drawer"
+            (click)="showDrawer()"
+          >
+            <i class="bi-list"></i>
+          </button>
+        </div>
+        <div class="col-lg-8 offset-lg-1 col-8">
+          <div class="input-group">
+            <i class="input-group-text bi-search"></i>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Search"
+              aria-label="Search bar"
+            />
+          </div>
+        </div>
+        <div class="col-2"></div>
+      </div>
+      <div class="row">
+        <div class="col-lg-10 offset-lg-1 contents col-12">
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -6,20 +6,20 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('budgets', '0001_initial'),
+        ("budgets", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='budget',
-            options={'ordering': ['end_date', 'created_at']},
+            name="budget",
+            options={"ordering": ["end_date", "created_at"]},
         ),
         migrations.AlterModelOptions(
-            name='budgetcolumn',
-            options={'ordering': ['budget__name', 'name']},
+            name="budgetcolumn",
+            options={"ordering": ["budget__name", "name"]},
         ),
         migrations.AlterModelOptions(
-            name='budgetitem',
-            options={'ordering': ['column__budget__name', 'column__name', 'name']},
+            name="budgetitem",
+            options={"ordering": ["column__budget__name", "column__name", "name"]},
         ),
     ]

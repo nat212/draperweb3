@@ -1,0 +1,17 @@
+.shortcut {
+  height: 128px;
+  width: 128px;
+  cursor: pointer;
+  user-select: none;
+  > .img-container {
+    width: 64px;
+    height: 64px;
+    > img {
+      width: 100%;
+      margin: auto;
+    }
+  }
+  > span {
+    font-size: 0.85rem;
+  }
+}
