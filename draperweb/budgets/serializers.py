@@ -70,4 +70,4 @@ class BudgetItemSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = BudgetItem
-        fields = ("url", "name", "category", "column", "amount")
+        fields = ("url", "name", "category", "column", "amount", "order")

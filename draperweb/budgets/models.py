@@ -79,9 +79,22 @@ class BudgetItem(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     amount = models.FloatField(default=0.0, blank=False, null=False)
+    order = models.PositiveIntegerField(default=0, blank=True, null=False)
+
+    def save(self, *args, **kwargs):
+        # Set order on first create
+        if not self.pk:
+            items = self.__class__.objects.filter(column=self.column).all()
+            if len(items) == 0:
+                self.order = 0
+                return super().save(*args, **kwargs)
+            orders = [item.order for item in items]
+            max_order = max(orders)
+            self.order = max_order + 1
+            return super().save(*args, **kwargs)
 
     def __str__(self) -> str:
         return f"{self.name} ({self.column.name}, {self.column.budget.name})"
 
     class Meta:
-        ordering = ["column__budget__name", "column__name", "name"]
+        ordering = ["order", "column__budget__name", "column__name", "name"]
