@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {Budget} from '../../models/budget';
-import {BsModalRef} from 'ngx-bootstrap/modal';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {BsDaterangepickerConfig} from 'ngx-bootstrap/datepicker';
+import { Component, OnInit } from '@angular/core';
+import { Budget } from '../../models/budget';
+import { BsModalRef } from 'ngx-bootstrap/modal';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { BsDaterangepickerConfig } from 'ngx-bootstrap/datepicker';
 
 @Component({
   selector: 'app-budget-add-edit',
@@ -31,8 +31,16 @@ export class BudgetAddEditComponent implements OnInit {
     this.originalBudget = this.budget;
     this.budgetForm = this.formBuilder.group({
       name: [this.budget?.name || '', Validators.required],
-      date: [this.budget ? [this.budget.startDate, this.budget.endDate] : null],
+      date: [
+        this.budget && this.budget.startDate && this.budget.endDate
+          ? [this.budget.startDate, this.budget.endDate]
+          : null,
+      ],
     });
+  }
+
+  public clearDate(): void {
+    this.budgetForm.patchValue({ date: null });
   }
 
   public close() {
@@ -41,8 +49,8 @@ export class BudgetAddEditComponent implements OnInit {
   }
 
   public save() {
-    let startDate: string | undefined;
-    let endDate: string | undefined;
+    let startDate: string | null = null;
+    let endDate: string | null = null;
     const { name, date } = this.budgetForm.value;
     if (date) {
       startDate = date[0].toISOString().split('T')[0];

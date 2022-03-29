@@ -4,8 +4,8 @@ export interface IBudget {
   url?: string;
   id?: number;
   name: string;
-  start_date?: string;
-  end_date?: string;
+  start_date?: string | null;
+  end_date?: string | null;
   columns?: string[];
   import_columns?: string;
 }
@@ -36,8 +36,8 @@ export class Budget extends Model<IBudget> {
 
   override serialise(): Partial<IBudget> {
     return {
-      start_date: this.startDate?.toISOString().split('T')[0],
-      end_date: this.endDate?.toISOString().split('T')[0],
+      start_date: this.startDate?.toISOString().split('T')[0] ?? null,
+      end_date: this.endDate?.toISOString().split('T')[0] ?? null,
       name: this.name,
     };
   }

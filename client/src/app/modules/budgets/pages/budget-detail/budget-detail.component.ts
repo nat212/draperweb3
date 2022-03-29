@@ -1,23 +1,22 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   BehaviorSubject,
-  combineLatest,
   concat,
   filter,
   map,
   Observable,
   Subject,
   switchMap,
-  take,
   toArray,
 } from 'rxjs';
-import {Budget} from '../../models/budget';
-import {BudgetColumn} from '../../models/budget-column';
-import {BudgetColumnService} from '../../services/budget-column.service';
-import {BsModalService} from 'ngx-bootstrap/modal';
-import {ColumnAddEditComponent} from '../../modals/column-add-edit/column-add-edit.component';
-import {BudgetService} from '../../services/budget.service';
+import { Budget } from '../../models/budget';
+import { BudgetColumn } from '../../models/budget-column';
+import { BudgetColumnService } from '../../services/budget-column.service';
+import { ColumnAddEditComponent } from '../../modals/column-add-edit/column-add-edit.component';
+import { BudgetService } from '../../services/budget.service';
+import { AlertService } from '../../../../services/alert.service';
+import { BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-budget-detail',
@@ -33,9 +32,10 @@ export class BudgetDetailComponent implements OnInit {
   constructor(
     private readonly route: ActivatedRoute,
     private readonly columnService: BudgetColumnService,
-    private readonly bsModal: BsModalService,
     private readonly router: Router,
-    private readonly budgetService: BudgetService
+    private readonly budgetService: BudgetService,
+    private readonly alert: AlertService,
+    private readonly modal: BsModalService
   ) {}
 
   ngOnInit(): void {
@@ -64,21 +64,31 @@ export class BudgetDetailComponent implements OnInit {
   }
 
   public addColumn(): void {
-    const modalRef = this.bsModal.show(ColumnAddEditComponent);
-    const _combine = combineLatest([modalRef.onHidden, modalRef.onHide]);
-    _combine.pipe(take(1)).subscribe(() => {
-      if (modalRef.content?.changed && modalRef.content?.column) {
-        modalRef.content.column.budget = this.budget.url;
-        this.columnService
-          .createOne(modalRef.content.column)
-          .subscribe(() => this.refreshColumns$.next());
-      }
-    });
+    this.alert
+      .openModal(this.modal, ColumnAddEditComponent, {}, ['changed', 'column'])
+      .subscribe(({ changed, column }) => {
+        if (changed && column) {
+          column.budget = this.budget.url;
+          this.columnService
+            .createOne(column)
+            .subscribe(() => this.refreshColumns$.next());
+        }
+      });
   }
 
   public removeColumn(column: BudgetColumn) {
-    this.columnService.removeOne(column).subscribe(() => {
-      this.refreshColumns$.next();
-    });
+    this.alert
+      .confirm(
+        this.modal,
+        'Remove Column',
+        `Are you sure you wish to remove the budget column ${column.name}?`
+      )
+      .subscribe((result) => {
+        if (result) {
+          this.columnService.removeOne(column).subscribe(() => {
+            this.refreshColumns$.next();
+          });
+        }
+      });
   }
 }

@@ -11,9 +11,10 @@ import {LoginComponent} from './pages/login/login.component';
 import {AuthenticatedComponent} from './pages/authenticated/authenticated.component';
 import {HTTP_INTERCEPTORS, HttpClientModule, HttpClientXsrfModule} from '@angular/common/http';
 import {AbsoluteUrlCsrfInterceptor} from "./interceptors/absolute-url-csrf.interceptor";
+import { ConfirmComponent } from './modals/confirm/confirm.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, AuthenticatedComponent],
+  declarations: [AppComponent, LoginComponent, AuthenticatedComponent, ConfirmComponent],
   imports: [
     AppRoutingModule,
     BrowserModule,

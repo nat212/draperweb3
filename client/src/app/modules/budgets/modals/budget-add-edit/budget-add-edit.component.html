@@ -38,6 +38,9 @@
       bsDaterangepicker
       [bsConfig]="rangePickerConfig"
     />
+    <button *ngIf="budgetForm.value.date" type="button" class="btn btn-warning" (click)="clearDate()">
+      <i class="bi-x"></i>
+    </button>
   </div>
 </form>
 <div class="modal-footer">

@@ -13,21 +13,36 @@
       </h1>
     </div>
     <div class="col-2 col-lg-3">
-      <button class="btn btn-success float-end rounded-circle" (click)="addColumn()">
+      <button
+        class="btn btn-success float-end rounded-circle"
+        (click)="addColumn()"
+      >
         <i class="bi-plus"></i>
       </button>
     </div>
   </div>
   <div class="row">
-    <div class="col-12">
-      <tabset type="pills" [justified]="true">
-        <tab
-          *ngFor="let column of columns$ | async"
-        >
+    <div class="col-12" *ngIf="columns$ | async as columns">
+      <tabset type="pills" [justified]="true" class="d-none d-lg-block">
+        <tab *ngFor="let column of columns">
           <ng-template tabHeading>
             {{ column.name }}
-            <button class="btn btn-sm float-end btn-close" (click)="removeColumn(column)">
-            </button>
+            <button
+              class="btn btn-sm float-end btn-close"
+              (click)="removeColumn(column)"
+            ></button>
+          </ng-template>
+          Content of {{ column.name }}
+        </tab>
+      </tabset>
+      <tabset type="pills" [vertical]="true" class="d-block d-lg-none">
+        <tab *ngFor="let column of columns">
+          <ng-template tabHeading>
+            {{ column.name }}
+            <button
+              class="btn btn-sm float-end btn-close"
+              (click)="removeColumn(column)"
+            ></button>
           </ng-template>
           Content of {{ column.name }}
         </tab>

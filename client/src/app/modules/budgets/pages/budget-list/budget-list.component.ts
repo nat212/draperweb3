@@ -33,7 +33,8 @@ export class BudgetListComponent implements OnInit {
     private readonly service: BudgetService,
     private readonly formBuilder: FormBuilder,
     private readonly bsModalService: BsModalService
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.loading = true;
@@ -43,7 +44,6 @@ export class BudgetListComponent implements OnInit {
       year: [null],
       date: [null],
     });
-    this.filterForm.valueChanges.subscribe(console.log);
     this.budgets$ = combineLatest([
       this.searchControl.valueChanges.pipe(startWith(this.searchControl.value)),
       this.filterForm.valueChanges.pipe(startWith(this.filterForm.value)),
@@ -72,7 +72,7 @@ export class BudgetListComponent implements OnInit {
 
   public editBudget(budget: Budget): void {
     const modalRef = this.bsModalService.show(BudgetAddEditComponent, {
-      initialState: { budget },
+      initialState: {budget},
     });
     const _combine = combineLatest(
       [modalRef?.onHidden, modalRef?.onHide].filter((val) => !!val)
