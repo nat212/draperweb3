@@ -33,7 +33,7 @@ class Budget(models.Model):
         return self.name
 
     class Meta:
-        ordering = ["end_date", "created_at"]
+        ordering = ["-end_date", "created_at"]
 
 
 class BudgetColumn(models.Model):
