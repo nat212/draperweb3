@@ -14,7 +14,7 @@
         "categories": [
             "Badges"
         ],
-        "tags": null
+        "tags": []
     },
     "calendar2-plus": {
         "title": "Calendar2 plus",
@@ -575,7 +575,7 @@
     },
     "boxes": {
         "title": "Boxes",
-        "categories": null,
+        "categories": [],
         "tags": [
             "cube"
         ]
@@ -1010,7 +1010,7 @@
         "categories": [
             "Devices"
         ],
-        "tags": null
+        "tags": []
     },
     "cloud-lightning-rain-fill": {
         "title": "Cloud lightning rain fill",
@@ -2732,7 +2732,7 @@
         "categories": [
             "Badges"
         ],
-        "tags": null
+        "tags": []
     },
     "distribute-horizontal": {
         "title": "Distribute horizontal",
@@ -3223,7 +3223,7 @@
         "categories": [
             "Devices"
         ],
-        "tags": null
+        "tags": []
     },
     "boombox-fill": {
         "title": "Boombox fill",
@@ -3400,8 +3400,8 @@
     },
     "filetype-ppt": {
         "title": "Filetype ppt",
-        "categories": null,
-        "tags": null
+        "categories": [],
+        "tags": []
     },
     "calendar-day-fill": {
         "title": "Calendar day fill",
@@ -3617,7 +3617,7 @@
             "shape",
             "stop",
             "ban",
-            false
+            "false"
         ]
     },
     "sunrise-fill": {
@@ -3847,7 +3847,7 @@
         "categories": [
             "Badges"
         ],
-        "tags": null,
+        "tags": [],
         "aliases": [
             "/icons/patch-plus-fll/"
         ]
@@ -3857,7 +3857,7 @@
         "categories": [
             "Badges"
         ],
-        "tags": null
+        "tags": []
     },
     "card-heading": {
         "title": "Card heading",
@@ -4440,7 +4440,7 @@
     },
     "vinyl": {
         "title": "Vinyl",
-        "categories": null,
+        "categories": [],
         "tags": [
             "audio",
             "music",
@@ -4958,7 +4958,7 @@
         "categories": [
             "Brand"
         ],
-        "tags": null
+        "tags": []
     },
     "backspace": {
         "title": "Backspace",
@@ -5117,7 +5117,7 @@
         "categories": [
             "Badges"
         ],
-        "tags": null,
+        "tags": [],
         "aliases": [
             "/icons/patch-question-fll/"
         ]
@@ -5263,7 +5263,7 @@
         "categories": [
             "Badges"
         ],
-        "tags": null
+        "tags": []
     },
     "reception-2": {
         "title": "Reception 2",
@@ -5658,7 +5658,7 @@
         ]
     },
     "123": {
-        "title": 123,
+        "title": "123",
         "categories": [
             "Typography"
         ],
@@ -6304,8 +6304,8 @@
             "UI and keyboard"
         ],
         "tags": [
-            false,
-            true
+            "false",
+            "true"
         ]
     },
     "filetype-mp3": {
@@ -6618,7 +6618,7 @@
         "categories": [
             "Badges"
         ],
-        "tags": null
+        "tags": []
     },
     "moon-stars": {
         "title": "Moon stars",
@@ -8142,8 +8142,8 @@
     },
     "filetype-xls": {
         "title": "Filetype xls",
-        "categories": null,
-        "tags": null
+        "categories": [],
+        "tags": []
     },
     "align-center": {
         "title": "Align center",
@@ -9969,7 +9969,7 @@
         "categories": [
             "Badges"
         ],
-        "tags": null,
+        "tags": [],
         "aliases": [
             "/icons/patch-minus-fll/"
         ]
@@ -10606,7 +10606,7 @@
             "shape",
             "stop",
             "ban",
-            false
+            "false"
         ]
     },
     "toggles2": {
@@ -10703,8 +10703,8 @@
     },
     "chevron-expand": {
         "title": "Chevron expand",
-        "categories": null,
-        "tags": null
+        "categories": [],
+        "tags": []
     },
     "slash-lg": {
         "title": "Slash lg",
@@ -10715,7 +10715,7 @@
             "shape",
             "stop",
             "ban",
-            false
+            "false"
         ]
     },
     "telephone": {
@@ -11614,7 +11614,7 @@
             "shape",
             "stop",
             "ban",
-            false
+            "false"
         ]
     },
     "credit-card-2-front": {
@@ -13928,7 +13928,7 @@
         "categories": [
             "Devices"
         ],
-        "tags": null
+        "tags": []
     },
     "dot": {
         "title": "Dot",
@@ -14063,7 +14063,7 @@
             "shape",
             "stop",
             "ban",
-            false
+            "false"
         ]
     },
     "x": {
@@ -14989,7 +14989,7 @@
             "shape",
             "stop",
             "ban",
-            false
+            "false"
         ]
     },
     "calendar2-range-fill": {
@@ -16114,7 +16114,7 @@
         "categories": [
             "Devices"
         ],
-        "tags": null
+        "tags": []
     },
     "eyeglasses": {
         "title": "Eyeglasses",
