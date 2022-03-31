@@ -1,0 +1,3 @@
+[submodule "bs-icons"]
+	path = bs-icons
+	url = https://github.com/twbs/icons
