@@ -92,6 +92,7 @@ class BudgetItem(models.Model):
             max_order = max(orders)
             self.order = max_order + 1
             return super().save(*args, **kwargs)
+        return super().save(*args, **kwargs)
 
     def __str__(self) -> str:
         return f"{self.name} ({self.column.name}, {self.column.budget.name})"

@@ -44,11 +44,12 @@ $input-focus-width: 1px;
 @import 'bootstrap/scss/offcanvas';
 @import 'bootstrap/scss/images';
 @import 'bootstrap/scss/modal';
-
+@import 'bootstrap/scss/button-group';
 
 // Datepicker override
 .bs-datepicker-head {
   background-color: $primary !important;
+
   > bs-datepicker-navigation-view > button {
     color: #000 !important;
   }
@@ -62,6 +63,7 @@ bs-daterangepicker-container {
   bs-days-calendar-view:first-child .bs-datepicker-head {
     border-radius: 3px 0 0 0;
   }
+
   bs-days-calendar-view:last-child .bs-datepicker-head {
     border-radius: 0 3px 0 0;
   }

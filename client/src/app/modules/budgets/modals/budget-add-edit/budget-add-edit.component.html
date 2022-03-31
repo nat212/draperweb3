@@ -1,53 +1,41 @@
-<div class="modal-header">
-  <h4 class="modal-title pull-left">
-    <span *ngIf="budget; else noBudget">Edit Budget</span>
-    <ng-template #noBudget>
-      <span>Add Budget</span>
-    </ng-template>
-  </h4>
-  <button
-    type="button"
-    class="btn-close btn btn-sm close pull-end"
-    aria-label="Close"
-    (click)="close()"
-  >
-    <span aria-hidden="true" class="visually-hidden">&times;</span>
-  </button>
-</div>
-<form class="modal-body d-flex flex-column gap-3" [formGroup]="budgetForm">
-  <div class="input-group">
-    <i class="bi-pencil input-group-text"></i>
-    <input
-      type="text"
-      name="budget-name"
-      autocomplete="none"
-      formControlName="name"
-      class="form-control"
-      placeholder="Budget Name"
-    />
-  </div>
-  <div class="input-group">
-    <i class="bi-calendar input-group-text"></i>
-    <input
-      type="text"
-      name="budget-date"
-      autocomplete="none"
-      formControlName="date"
-      class="form-control"
-      placeholder="Budget Dates"
-      bsDaterangepicker
-      [bsConfig]="rangePickerConfig"
-    />
-    <button *ngIf="budgetForm.value.date" type="button" class="btn btn-warning" (click)="clearDate()">
-      <i class="bi-x"></i>
+<form [formGroup]="form" (submit)="save()">
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">
+      <span *ngIf="model; else noBudget">Edit Budget</span>
+      <ng-template #noBudget>
+        <span>Add Budget</span>
+      </ng-template>
+    </h4>
+    <button type="button" class="btn-close btn btn-sm close pull-end" aria-label="Close" (click)="close()">
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
     </button>
   </div>
+  <div class="modal-body d-flex flex-column gap-3">
+    <div class="input-group">
+      <i class="bi-pencil input-group-text"></i>
+      <input type="text" name="budget-name" autocomplete="none" formControlName="name" class="form-control"
+             placeholder="Budget Name"/>
+    </div>
+    <div class="input-group">
+      <i class="bi-calendar input-group-text"></i>
+      <input
+        type="text"
+        name="budget-date"
+        autocomplete="none"
+        formControlName="date"
+        class="form-control"
+        placeholder="Budget Dates"
+        bsDaterangepicker
+        [bsConfig]="rangePickerConfig"
+      />
+      <button *ngIf="form.value.date" type="button" class="btn btn-warning" (click)="clearDate()">
+        <i class="bi-x"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" (click)="close()">Cancel</button>
+    <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Save</button>
+  </div>
 </form>
-<div class="modal-footer">
-  <button type="button" class="btn btn-default" (click)="close()">
-    Cancel
-  </button>
-  <button type="button" class="btn btn-primary" [disabled]="budgetForm.invalid" (click)="save()">
-    Save
-  </button>
-</div>

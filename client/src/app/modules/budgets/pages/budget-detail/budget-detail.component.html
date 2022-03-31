@@ -1,8 +1,6 @@
 <div class="container-fluid">
   <div class="row mb-4">
-    <div
-      class="col-2 col-lg-1 d-flex justify-content-center align-items-center"
-    >
+    <div class="col-2 col-lg-1 d-flex justify-content-center align-items-center">
       <button class="btn btn-sm" [routerLink]="['..']">
         <i class="bi-chevron-left"></i>
       </button>
@@ -13,38 +11,39 @@
       </h1>
     </div>
     <div class="col-2 col-lg-3">
-      <button
-        class="btn btn-success float-end rounded-circle"
-        (click)="addColumn()"
-      >
+      <button class="btn btn-success float-end rounded-circle" (click)="addColumn()" tooltip="Add Column">
         <i class="bi-plus"></i>
       </button>
     </div>
   </div>
-  <div class="row">
+  <div class="row" [hidden]="!loading">
+    <div class="col-12 d-flex flex-row justify-content-center align-items-center gap-3">
+      <div class="spinner-border text-primary" role="status">
+        <div class="visually-hidden">Loading...</div>
+      </div>
+      <span>Loading...</span>
+    </div>
+  </div>
+  <div class="row" [hidden]="loading">
     <div class="col-12" *ngIf="columns$ | async as columns">
       <tabset type="pills" [justified]="true" class="d-none d-lg-block">
         <tab *ngFor="let column of columns">
           <ng-template tabHeading>
             {{ column.name }}
-            <button
-              class="btn btn-sm float-end btn-close"
-              (click)="removeColumn(column)"
-            ></button>
+            <button class="btn btn-sm float-end btn-close"
+                    (click)="$event.cancelBubble = true; removeColumn(column)"></button>
           </ng-template>
-          Content of {{ column.name }}
+          <app-column-detail [column]="column"></app-column-detail>
         </tab>
       </tabset>
       <tabset type="pills" [vertical]="true" class="d-block d-lg-none">
         <tab *ngFor="let column of columns">
           <ng-template tabHeading>
             {{ column.name }}
-            <button
-              class="btn btn-sm float-end btn-close"
-              (click)="removeColumn(column)"
-            ></button>
+            <button class="btn btn-sm float-end btn-close"
+                    (click)="$event.cancelBubble = true; removeColumn(column)"></button>
           </ng-template>
-          Content of {{ column.name }}
+          <app-column-detail [column]="column"></app-column-detail>
         </tab>
       </tabset>
     </div>

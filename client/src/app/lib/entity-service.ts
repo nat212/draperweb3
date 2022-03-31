@@ -1,7 +1,7 @@
-import {Model} from '../models/model';
-import {HttpClient} from '@angular/common/http';
-import {map, Observable} from 'rxjs';
-import {Type} from '@angular/core';
+import { IModel, Model } from '../models/model';
+import { HttpClient } from '@angular/common/http';
+import { map, Observable } from 'rxjs';
+import { Type } from '@angular/core';
 
 interface IBackendResponse<O> {
   count: number;
@@ -16,7 +16,7 @@ export interface IFilter {
   [key: string]: FilterType | undefined;
 }
 
-export abstract class EntityService<O, T extends Model<O>, F extends IFilter> {
+export abstract class EntityService<O extends IModel, T extends Model<O>, F extends IFilter> {
   protected abstract readonly url: string;
   protected abstract readonly entityClass: Type<T>;
 
@@ -48,11 +48,7 @@ export abstract class EntityService<O, T extends Model<O>, F extends IFilter> {
     };
     return this.http
       .get<IBackendResponse<O>>(this.url, { params })
-      .pipe(
-        map((response) =>
-          response.results.map((item) => new this.entityClass(item))
-        )
-      );
+      .pipe(map((response) => response.results.map((item) => new this.entityClass(item))));
   }
 
   protected getModelUrl(id: number): string {
@@ -60,11 +56,8 @@ export abstract class EntityService<O, T extends Model<O>, F extends IFilter> {
   }
 
   protected fetchOne(idOrUrl: number | string): Observable<T> {
-    const url =
-      typeof idOrUrl === 'string' ? idOrUrl : this.getModelUrl(idOrUrl);
-    return this.http
-      .get<O>(url)
-      .pipe(map((item) => new this.entityClass(item)));
+    const url = typeof idOrUrl === 'string' ? idOrUrl : this.getModelUrl(idOrUrl);
+    return this.http.get<O>(url).pipe(map((item) => new this.entityClass(item)));
   }
 
   public getMany(filters?: F, search?: string): Observable<T[]> {
@@ -76,23 +69,19 @@ export abstract class EntityService<O, T extends Model<O>, F extends IFilter> {
   }
 
   public createOne(model: T): Observable<T> {
-    return this.http
-      .post<O>(this.url, model.serialise())
-      .pipe(map((item) => new this.entityClass(item)));
+    return this.http.post<O>(this.url, model.serialise()).pipe(map((item) => new this.entityClass(item)));
   }
 
   public updateOne(model: T): Observable<T> {
-    if (!model.id && !model.url) {
+    if ((!model.id || model.id < 0) && !model.url) {
       throw new Error('Cannot update model without id or url.');
     }
     const url = model.url || this.getModelUrl(model.id!);
-    return this.http
-      .patch<O>(url, model.serialise())
-      .pipe(map((item) => new this.entityClass(item)));
+    return this.http.patch<O>(url, model.serialise()).pipe(map((item) => new this.entityClass(item)));
   }
 
   public removeOne(model: T): Observable<null> {
-    if (!model.id && !model.url) {
+    if ((!model.id || model.id < 0) && !model.url) {
       throw new Error('Cannot remove model without id or url.');
     }
     const url = model.url || this.getModelUrl(model.id!);

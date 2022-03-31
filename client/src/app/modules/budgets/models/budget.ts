@@ -1,8 +1,6 @@
-import {Model} from '../../../models/model';
+import {IModel, Model} from '../../../models/model';
 
-export interface IBudget {
-  url?: string;
-  id?: number;
+export interface IBudget extends IModel {
   name: string;
   start_date?: string | null;
   end_date?: string | null;
@@ -11,19 +9,14 @@ export interface IBudget {
 }
 
 export class Budget extends Model<IBudget> {
-  readonly id?: number;
-  readonly url?: string;
-
   public name!: string;
   public startDate?: Date;
   public endDate?: Date;
   public columns?: string[];
   public importColumnsUrl?: string;
 
-  constructor(data: IBudget) {
+  constructor(data: Partial<IBudget>) {
     super(data);
-    this.id = data.id;
-    this.url = data.url;
   }
 
   setData(data: IBudget): void {

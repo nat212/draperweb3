@@ -10,8 +10,12 @@ import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {BudgetAddEditComponent} from './modals/budget-add-edit/budget-add-edit.component';
 import {ModalModule} from 'ngx-bootstrap/modal';
 import {BudgetDetailComponent} from './pages/budget-detail/budget-detail.component';
-import {TabsModule} from "ngx-bootstrap/tabs";
+import {TabsModule} from 'ngx-bootstrap/tabs';
 import {ColumnAddEditComponent} from './modals/column-add-edit/column-add-edit.component';
+import {ColumnDetailComponent} from './components/column-detail/column-detail.component';
+import {ItemAddEditComponent} from './modals/item-add-edit/item-add-edit.component';
+import {ButtonsModule} from "ngx-bootstrap/buttons";
+import {TooltipModule} from "ngx-bootstrap/tooltip";
 
 @NgModule({
   declarations: [
@@ -19,6 +23,8 @@ import {ColumnAddEditComponent} from './modals/column-add-edit/column-add-edit.c
     BudgetAddEditComponent,
     BudgetDetailComponent,
     ColumnAddEditComponent,
+    ColumnDetailComponent,
+    ItemAddEditComponent,
   ],
   imports: [
     CommonModule,
@@ -29,6 +35,8 @@ import {ColumnAddEditComponent} from './modals/column-add-edit/column-add-edit.c
     BsDropdownModule,
     ModalModule.forChild(),
     TabsModule,
+    ButtonsModule,
+    TooltipModule,
   ],
 })
 export class BudgetsModule {}

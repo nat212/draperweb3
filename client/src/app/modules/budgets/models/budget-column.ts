@@ -1,8 +1,6 @@
-import {Model} from '../../../models/model';
+import {IModel, Model} from '../../../models/model';
 
-export interface IBudgetColumn {
-  url?: string;
-  id?: number;
+export interface IBudgetColumn extends IModel {
   name: string;
   budget?: string;
   items?: string[];
@@ -11,8 +9,6 @@ export interface IBudgetColumn {
 }
 
 export class BudgetColumn extends Model<IBudgetColumn> {
-  readonly id?: number;
-  readonly url?: string;
   public name!: string;
   public budget?: string;
   public budgetId?: number;
@@ -20,10 +16,8 @@ export class BudgetColumn extends Model<IBudgetColumn> {
   public summary?: string;
   public breakdown?: string;
 
-  constructor(data: IBudgetColumn) {
+  constructor(data: Partial<IBudgetColumn>) {
     super(data);
-    this.id = data.id;
-    this.url = data.url;
   }
 
   serialise(): Partial<IBudgetColumn> {
@@ -33,8 +27,8 @@ export class BudgetColumn extends Model<IBudgetColumn> {
     };
   }
 
-  setData(data: IBudgetColumn): void {
-    this.name = data.name;
+  setData(data: Partial<IBudgetColumn>): void {
+    this.name = data.name!;
     this.budget = data.budget;
     this.items = data.items || [];
     this.breakdown = data.breakdown;

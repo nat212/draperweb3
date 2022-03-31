@@ -6,7 +6,7 @@ from draperweb.budgets.models import Budget, BudgetColumn, BudgetItem, Category
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ("name", "description", "icon")
+        fields = ("url", "id", "name", "description", "icon")
 
 
 class BudgetSerializer(serializers.HyperlinkedModelSerializer):
@@ -70,4 +70,4 @@ class BudgetItemSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = BudgetItem
-        fields = ("url", "name", "category", "column", "amount", "order")
+        fields = ("id", "url", "name", "category", "column", "amount", "order")

@@ -86,8 +86,3 @@ class BudgetItemViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     filterset_fields = ["column", "column__budget", "category"]
     search_fields = ["name", "column__name", "column__budget__name", "category__name"]
-    #
-    # def get_serializer_context(self):
-    #     result = super().get_serializer_context()
-    #     result["request"] = None
-    #     return result

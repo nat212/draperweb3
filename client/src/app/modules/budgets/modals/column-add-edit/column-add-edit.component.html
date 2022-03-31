@@ -1,33 +1,19 @@
-<div class="modal-header">
-  <h4 class="modal-title">
-    <ng-container *ngIf="column; else noColumn">Edit Column</ng-container>
-    <ng-template #noColumn>Add Column</ng-template>
-  </h4>
-  <button
-    type="button"
-    class="btn btn-close"
-    aria-label="Close"
-    (click)="close()"
-  ></button>
-</div>
-<div class="modal-body d-flex flex-column gap-3">
-  <div class="input-group">
-    <i class="bi-pencil input-group-text"></i>
-    <input
-      class="form-control"
-      name="column-name"
-      [formControl]="nameControl"
-      placeholder="Column Name"
-    />
+<form [formGroup]="form" (submit)="save()">
+  <div class="modal-header">
+    <h4 class="modal-title">
+      <ng-container *ngIf="model; else noColumn">Edit Column</ng-container>
+      <ng-template #noColumn>Add Column</ng-template>
+    </h4>
+    <button type="button" class="btn btn-close" aria-label="Close" (click)="close()"></button>
   </div>
-</div>
-<div class="modal-footer">
-  <button class="btn btn-default" (click)="close()">Cancel</button>
-  <button
-    class="btn btn-primary"
-    (click)="save()"
-    [disabled]="nameControl.invalid"
-  >
-    Save
-  </button>
-</div>
+  <div class="modal-body d-flex flex-column gap-3">
+    <div class="input-group">
+      <i class="bi-pencil input-group-text"></i>
+      <input class="form-control" name="column-name" formControlName="name" placeholder="Column Name"/>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" (click)="close()">Cancel</button>
+    <button class="btn btn-primary" type="submit" [disabled]="form.invalid">Save</button>
+  </div>
+</form>

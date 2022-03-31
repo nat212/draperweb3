@@ -1,0 +1,57 @@
+<div class="container-fluid mt-3">
+  <div class="row" [hidden]="!loading">
+    <div class="col-12 d-flex flex-row align-items-center justify-content-center gap-3">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <div>Loading...</div>
+    </div>
+  </div>
+
+  <div class="row" [hidden]="loading">
+    <div class="col-12">
+      <div class="table-responsive">
+        <table class="table table-borderless table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Category</th>
+              <th scope="col">Amount</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="items$ | async as items">
+            <tr *ngIf="!items.length">
+              <td colspan="3" class="text-center">No items</td>
+            </tr>
+            <tr
+              *ngFor="let item of items"
+              (click)="editItem(item)"
+              [class.text-danger]="item.amount < 0"
+              [class.text-success]="item.amount > 0"
+            >
+              <td>{{ item.name }}</td>
+              <td>
+                <ng-container *ngIf="item.category; else noCategory">
+                  <ng-container *ngIf="getCategory(item.category) | async as category; else noCategory">
+                    <i class="me-3" [class]="category.icon"></i>
+                    <span>{{ category.name }}</span>
+                  </ng-container>
+                </ng-container>
+                <ng-template #noCategory>N/A</ng-template>
+              </td>
+              <td>{{ item.amount | currency: 'ZAR':'symbol-narrow' }}</td>
+            </tr>
+            <tr>
+              <td colspan="3" class="text-end">
+                <button class="btn btn-sm btn-outline-success" (click)="addItem()">
+                  <i class="bi-plus"></i>
+                  Add Item
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

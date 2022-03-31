@@ -1,11 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {BudgetService} from '../../services/budget.service';
-import {combineLatest, debounceTime, Observable, startWith, Subject, switchMap, take, tap,} from 'rxjs';
+import {combineLatest, debounceTime, Observable, startWith, Subject, switchMap, tap} from 'rxjs';
 import {Budget} from '../../models/budget';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {BsDaterangepickerConfig} from 'ngx-bootstrap/datepicker';
 import {BsModalService} from 'ngx-bootstrap/modal';
 import {BudgetAddEditComponent} from '../../modals/budget-add-edit/budget-add-edit.component';
+import {AlertService} from '../../../../services/alert.service';
 
 @Component({
   selector: 'app-budget-list',
@@ -32,7 +33,8 @@ export class BudgetListComponent implements OnInit {
   constructor(
     private readonly service: BudgetService,
     private readonly formBuilder: FormBuilder,
-    private readonly bsModalService: BsModalService
+    private readonly bsModalService: BsModalService,
+    private readonly alert: AlertService,
   ) {
   }
 
@@ -50,39 +52,30 @@ export class BudgetListComponent implements OnInit {
       this.refresh$.pipe(startWith(null)),
     ]).pipe(
       debounceTime(500),
-      tap(() => this.loading = true),
+      tap(() => (this.loading = true)),
       switchMap(([search, filters, _]) => this.service.getMany(filters, search)),
-      tap(() => this.loading = false),
+      tap(() => (this.loading = false)),
     );
   }
 
   public addBudget(): void {
-    const modalRef = this.bsModalService.show(BudgetAddEditComponent);
-    const _combine = combineLatest(
-      [modalRef?.onHidden, modalRef?.onHide].filter((val) => !!val)
-    );
-    _combine.pipe(take(1)).subscribe(() => {
-      if (modalRef.content?.changed && modalRef.content?.budget) {
-        this.service
-          .createOne(modalRef.content.budget)
-          .subscribe(() => this.refresh$.next());
+    this.alert.openModal(this.bsModalService, BudgetAddEditComponent, {}, ['changed', 'model']).subscribe(({
+                                                                                                             changed,
+                                                                                                             model
+                                                                                                           }) => {
+      if (changed && model) {
+        this.service.createOne(model).subscribe(() => this.refresh$.next());
       }
     });
   }
 
   public editBudget(budget: Budget): void {
-    const modalRef = this.bsModalService.show(BudgetAddEditComponent, {
-      initialState: {budget},
-    });
-    const _combine = combineLatest(
-      [modalRef?.onHidden, modalRef?.onHide].filter((val) => !!val)
-    );
-    _combine.pipe(take(1)).subscribe(() => {
-      if (modalRef.content?.changed && modalRef.content?.budget) {
-        this.service
-          .updateOne(modalRef.content.budget)
-          .subscribe(() => this.refresh$.next());
-      }
-    });
+    this.alert
+      .openModal(this.bsModalService, BudgetAddEditComponent, {model: budget}, ['changed', 'model'])
+      .subscribe(({changed, model}) => {
+        if (changed && model) {
+          this.service.updateOne(model).subscribe(() => this.refresh$.next());
+        }
+      });
   }
 }

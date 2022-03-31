@@ -1,0 +1,28 @@
+<form [formGroup]="form" (submit)="save()">
+  <div class="modal-header">
+    <h4 class="modal-title">{{ model ? 'Edit' : 'Add' }} Item</h4>
+    <button class="btn btn-close" type="button" (click)="close()"></button>
+  </div>
+  <div class="modal-body d-flex flex-column gap-3">
+    <div class="input-group">
+      <i class="input-group-text bi-pencil"></i>
+      <input type="text" name="budget-item-name" formControlName="name" class="form-control" placeholder="Name"/>
+    </div>
+    <div class="form-group d-flex flex-column align-items-stretch">
+      <div class="btn-group" btnRadioGroup formControlName="mode">
+        <label btnRadio="expense" class="btn btn-primary mb-0">Expense</label>
+        <label btnRadio="income" class="btn btn-primary mb-0">Income</label>
+      </div>
+    </div>
+    <div class="input-group align-self-center">
+      <span class="input-group-text">R</span>
+      <input type="number" name="budget-item-amount" formControlName="amount" class="form-control"
+             placeholder="Amount"/>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger me-auto" (click)="delete()">Delete</button>
+    <button type="button" class="btn btn-default" (click)="close()">Cancel</button>
+    <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Save</button>
+  </div>
+</form>
