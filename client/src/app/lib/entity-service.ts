@@ -1,6 +1,6 @@
 import { IModel, Model } from '../models/model';
 import { HttpClient } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
 import { Type } from '@angular/core';
 
 interface IBackendResponse<O> {
@@ -46,9 +46,10 @@ export abstract class EntityService<O extends IModel, T extends Model<O>, F exte
       ...(filters ? this.encodeFilters(filters) : {}),
       ...(search ? { search } : {}),
     };
-    return this.http
-      .get<IBackendResponse<O>>(this.url, { params })
-      .pipe(map((response) => response.results.map((item) => new this.entityClass(item))));
+    return this.http.get<IBackendResponse<O>>(this.url, { params }).pipe(
+      tap(console.log),
+      map((response) => response.results.map((item: O) => new this.entityClass(item))),
+    );
   }
 
   protected getModelUrl(id: number): string {

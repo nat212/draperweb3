@@ -66,7 +66,7 @@
         <th scope="col">Name</th>
         <th scope="col">Start</th>
         <th scope="col">End</th>
-        <th scope="col">
+        <th scope="col" class="text-end">
           <button class="btn btn-sm btn-outline-success" (click)="addBudget()">
             <i class="bi-plus"></i>
           </button>
@@ -102,7 +102,7 @@
         <ng-template #noEndDate>
           <td>N/A</td>
         </ng-template>
-        <td class="d-flex flex-row gap-2">
+        <th scope="row" class="d-flex flex-row gap-2 justify-content-end">
           <div dropdown container="body" placement="bottom right">
             <button
               class="btn btn-sm"
@@ -137,7 +137,7 @@
               </li>
             </ul>
           </div>
-        </td>
+        </th>
       </tr>
     </tbody>
   </table>
