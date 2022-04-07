@@ -1,16 +1,16 @@
-import {NgModule} from '@angular/core';
-import {BrowserModule} from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 
-import {AppComponent} from './app.component';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {ServiceWorkerModule} from '@angular/service-worker';
-import {environment} from '../environments/environment';
-import {ButtonsModule} from 'ngx-bootstrap/buttons';
-import {AppRoutingModule} from './app-routing.module';
-import {LoginComponent} from './pages/login/login.component';
-import {AuthenticatedComponent} from './pages/authenticated/authenticated.component';
-import {HTTP_INTERCEPTORS, HttpClientModule, HttpClientXsrfModule} from '@angular/common/http';
-import {AbsoluteUrlCsrfInterceptor} from "./interceptors/absolute-url-csrf.interceptor";
+import { AppComponent } from './app.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
+import { AppRoutingModule } from './app-routing.module';
+import { LoginComponent } from './pages/login/login.component';
+import { AuthenticatedComponent } from './pages/authenticated/authenticated.component';
+import { HTTP_INTERCEPTORS, HttpClientModule, HttpClientXsrfModule } from '@angular/common/http';
+import { AbsoluteUrlCsrfInterceptor } from './interceptors/absolute-url-csrf.interceptor';
 import { ConfirmComponent } from './modals/confirm/confirm.component';
 
 @NgModule({
@@ -32,9 +32,7 @@ import { ConfirmComponent } from './modals/confirm/confirm.component';
       headerName: environment.xsrfHeaderName,
     }),
   ],
-  providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AbsoluteUrlCsrfInterceptor, multi: true },
-  ],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: AbsoluteUrlCsrfInterceptor, multi: true }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

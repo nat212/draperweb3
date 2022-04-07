@@ -5,8 +5,10 @@ import { Type } from '@angular/core';
 
 interface IBackendResponse<O> {
   count: number;
-  next: any;
-  previous: any;
+  next?: string;
+  previous?: string;
+  num_pages: number;
+  page_size: number;
   results: O[];
 }
 
@@ -14,6 +16,31 @@ type FilterType = Date | Date[] | number | string;
 
 export interface IFilter {
   [key: string]: FilterType | undefined;
+}
+
+export interface IPagination {
+  page?: number;
+  pageSize?: number;
+}
+
+export class PaginatedResponse<T extends Model<O>, O extends IModel = IModel> {
+  public readonly count: number;
+  public readonly pageSize: number;
+  public readonly numPages: number;
+  public readonly results: T[];
+  public readonly next?: string;
+  public readonly previous?: string;
+  public readonly page: number;
+
+  constructor(cls: Type<T>, response: IBackendResponse<O>, page = 1) {
+    this.count = response.count;
+    this.pageSize = response.page_size;
+    this.numPages = response.num_pages;
+    this.results = response.results.map((r) => new cls(r));
+    this.next = response.next;
+    this.previous = response.previous;
+    this.page = page;
+  }
 }
 
 export abstract class EntityService<O extends IModel, T extends Model<O>, F extends IFilter> {
@@ -46,10 +73,18 @@ export abstract class EntityService<O extends IModel, T extends Model<O>, F exte
       ...(filters ? this.encodeFilters(filters) : {}),
       ...(search ? { search } : {}),
     };
-    return this.http.get<IBackendResponse<O>>(this.url, { params }).pipe(
-      tap(console.log),
-      map((response) => response.results.map((item: O) => new this.entityClass(item))),
-    );
+    return this.http
+      .get<IBackendResponse<O>>(this.url, { params })
+      .pipe(map((response) => response.results.map((item: O) => new this.entityClass(item))));
+  }
+
+  protected fetchPaginated(filters?: F, search?: string, pageOptions?: IPagination): Observable<IBackendResponse<O>> {
+    const params = {
+      ...(filters ? this.encodeFilters(filters) : {}),
+      ...(search ? { search } : {}),
+      ...(pageOptions ? { page: pageOptions.page, page_size: pageOptions.pageSize } : {}),
+    };
+    return this.http.get<IBackendResponse<O>>(this.url, { params });
   }
 
   protected getModelUrl(id: number): string {
@@ -63,6 +98,12 @@ export abstract class EntityService<O extends IModel, T extends Model<O>, F exte
 
   public getMany(filters?: F, search?: string): Observable<T[]> {
     return this.fetch(filters, search);
+  }
+
+  public getManyPaginated(filters?: F, search?: string, pageOptions?: IPagination): Observable<PaginatedResponse<T>> {
+    return this.fetchPaginated(filters, search, pageOptions).pipe(
+      map((response) => new PaginatedResponse<T>(this.entityClass, response, pageOptions ? pageOptions.page : 1)),
+    );
   }
 
   public getOne(idOrUrl: number | string): Observable<T> {

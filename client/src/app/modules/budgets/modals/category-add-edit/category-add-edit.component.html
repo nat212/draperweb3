@@ -1,0 +1,45 @@
+<form [formGroup]="form" (submit)="save()">
+  <div class="modal-header">
+    <h5 class="modal-title">{{ model ? 'Edit' : 'Add' }} Category</h5>
+    <button class="btn btn-close float-end" type="button" (click)="close()">
+      <span class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body d-flex flex-column gap-3">
+    <div class="input-group">
+      <i class="bi-pencil input-group-text"></i>
+      <input type="text" class="form-control" formControlName="name" placeholder="Name *" name="category-name" />
+    </div>
+    <div class="input-group">
+      <i class="bi-pencil input-group-text"></i>
+      <input type="text" class="form-control" formControlName="description" placeholder="Description" name="category-description" />
+    </div>
+    <div class="input-group">
+      <ng-template #iconTemplate let-item="item">
+        <i class="{{ item.icon }} me-2"></i>
+        <span>{{ item.icon }}</span>
+      </ng-template>
+      <i class="bi-image-alt input-group-text"></i>
+      <input
+        type="text"
+        class="form-control"
+        formControlName="icon"
+        placeholder="Icon *"
+        name="category-icon"
+        autocomplete="off"
+        [appAutocomplete]="icons"
+        [filterKeys]="['title', 'tags', 'categories', 'icon']"
+        [itemTemplate]="iconTemplate"
+      />
+      <i *ngIf="isValidIcon(form.value.icon)" class="{{ form.value.icon }} input-group-text"></i>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-danger me-auto" type="button" (click)="delete()" *ngIf="model">
+      <i class="bi-trash"></i>
+      Delete
+    </button>
+    <button class="btn btn-default" type="button" (click)="close()">Cancel</button>
+    <button class="btn btn-primary" type="submit" [disabled]="form.invalid">Save</button>
+  </div>
+</form>

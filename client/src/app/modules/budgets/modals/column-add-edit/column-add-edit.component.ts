@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, ElementRef} from '@angular/core';
 import {BsModalRef} from 'ngx-bootstrap/modal';
 import {BudgetColumn} from '../../models/budget-column';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';

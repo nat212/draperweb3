@@ -1,7 +1,7 @@
-import {Directive, OnInit} from '@angular/core';
-import {Model} from '../../models/model';
-import {FormBuilder, FormGroup} from '@angular/forms';
-import {BsModalRef} from 'ngx-bootstrap/modal';
+import { Directive, OnInit } from '@angular/core';
+import { Model } from '../../models/model';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 
 @Directive()
 export abstract class FormModal<T extends Model<O>, O = any> implements OnInit {
@@ -11,8 +11,7 @@ export abstract class FormModal<T extends Model<O>, O = any> implements OnInit {
   public model?: T;
   public deleted = false;
 
-  protected constructor(protected readonly formBuilder: FormBuilder, protected readonly modalRef: BsModalRef) {
-  }
+  protected constructor(protected readonly formBuilder: FormBuilder, protected readonly modalRef: BsModalRef) {}
 
   protected abstract buildForm(): FormGroup;
 

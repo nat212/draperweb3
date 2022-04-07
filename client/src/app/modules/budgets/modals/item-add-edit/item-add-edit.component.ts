@@ -1,8 +1,8 @@
-import {Component} from '@angular/core';
-import {FormModal} from '../../../../modals/form-modal/form-modal';
-import {BudgetItem} from '../../models/budget-item';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {BsModalRef} from 'ngx-bootstrap/modal';
+import { Component, ElementRef } from '@angular/core';
+import { FormModal } from '../../../../modals/form-modal/form-modal';
+import { BudgetItem } from '../../models/budget-item';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-item-add-edit',
@@ -23,7 +23,7 @@ export class ItemAddEditComponent extends FormModal<BudgetItem> {
   }
 
   protected getModelFromForm(): BudgetItem {
-    const {name, amount, mode} = this.form.value;
+    const { name, amount, mode } = this.form.value;
     const newAmount = mode === 'expense' ? -Math.abs(amount) : Math.abs(amount);
     return new BudgetItem({
       url: this.originalModel?.url,

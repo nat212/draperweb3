@@ -27,11 +27,6 @@ class BudgetViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     filterset_class = BudgetFilter
     search_fields = ["name", "end_date"]
-    #
-    # def get_serializer_context(self):
-    #     result = super().get_serializer_context()
-    #     result["request"] = None
-    #     return result
 
     @action(
         detail=True,
@@ -60,11 +55,6 @@ class BudgetColumnViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     filterset_fields = ["budget"]
     search_fields = ["name", "budget__name"]
-
-    # def get_serializer_context(self):
-    #     result = super().get_serializer_context()
-    #     result["request"] = None
-    #     return result
 
     @action(detail=True)
     def summary(self, request: Request, *args, **kwargs):

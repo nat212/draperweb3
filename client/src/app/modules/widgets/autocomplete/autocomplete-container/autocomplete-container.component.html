@@ -1,0 +1,16 @@
+<button
+  *ngFor="let item of items; let index = index"
+  class="dropdown-item"
+  [class.active]="activeIndex === index"
+  (mouseenter)="onItemHover(index)"
+  (mousedown)="itemSelected.next(item)"
+>
+  <ng-template
+    *ngIf="itemTemplate; else defaultDisplay"
+    [ngTemplateOutlet]="itemTemplate"
+    [ngTemplateOutletContext]="{ item: item, index: index, active: activeIndex === index }"
+  ></ng-template>
+  <ng-template #defaultDisplay>
+    {{ displayValue(item) }}
+  </ng-template>
+</button>
