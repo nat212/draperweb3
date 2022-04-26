@@ -1,3 +1,10 @@
+FROM node:lts-alpine AS client-build
+RUN apk add --no-cache python3 build-base
+WORKDIR /build
+ADD client .
+RUN yarn
+RUN yarn build
+
 FROM python:3.10-alpine
 ENV DRAPERWEB_SECRET ""
 ENV DRAPERWEB_MODE "production"
@@ -8,12 +15,14 @@ ENV DRAPERWEB_DB_USERNAME "postgres"
 ENV DRAPERWEB_DB_PASSWORD ""
 ENV SOCIAL_AUTH_NEXTCLOUD_KEY ""
 ENV SOCIAL_AUTH_NEXTCLOUD_SECRET ""
-EXPOSE 8000
-RUN apk add --no-cache libffi musl musl-dev libffi-dev build-base
+EXPOSE 80
+RUN apk add --no-cache libffi musl musl-dev libffi-dev build-base nginx
+COPY --from=client-build /build/dist/draperweb-client /var/www/draperweb/
+COPY docker/nginx.conf /etc/nginx/http.d/default.conf
 WORKDIR /app
 COPY Pipfile Pipfile.lock manage.py docker/entrypoint.sh ./
-RUN pip install --upgrade pip pipenv && pipenv lock -r > requirements.txt
+RUN pip install --upgrade pip pipenv gunicorn && pipenv lock -r > requirements.txt
 RUN pip install -r requirements.txt
 RUN rm Pipfile Pipfile.lock requirements.txt
 ADD draperweb draperweb
-ENTRYPOINT ["/bin/sh", "entrypoint.sh"]
+CMD ["/bin/sh", "entrypoint.sh"]

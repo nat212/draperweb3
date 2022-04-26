@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {BehaviorSubject, concat, filter, map, Observable, Subject, switchMap, tap, toArray} from 'rxjs';
 import {Budget} from '../../models/budget';
@@ -28,6 +28,7 @@ export class BudgetDetailComponent implements OnInit {
     private readonly budgetService: BudgetService,
     private readonly alert: AlertService,
     private readonly modal: BsModalService,
+    private readonly cdRef: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -40,12 +41,15 @@ export class BudgetDetailComponent implements OnInit {
     });
     this.columns$ = this.budget$.pipe(
       filter((budget) => !!budget),
-      switchMap((budget) => concat(...budget!.columns!.map((c) => this.columnService.getOne(c))).pipe(toArray())),
-      tap(() => this.loading = false),
+      switchMap((budget) => concat(...budget.columns!.map((c) => this.columnService.getOne(c))).pipe(toArray())),
+      tap(() => {
+        this.loading = false;
+        this.cdRef.detectChanges();
+      }),
     );
     this.refreshColumns$.pipe(
       tap(() => this.loading = true),
-      switchMap(() => this.budgetService.getOne(this.budget.url!))).subscribe((budget) => {
+      switchMap(() => this.budgetService.getOne(this.budget.url))).subscribe((budget) => {
       this.budget$.next(budget);
       this.budget = budget;
     });

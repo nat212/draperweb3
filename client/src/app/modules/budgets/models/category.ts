@@ -28,4 +28,8 @@ export class Category extends Model<ICategory> {
     this.description = data.description;
     this.icon = data.icon;
   }
+
+  public override toString() {
+    return this.name;
+  }
 }

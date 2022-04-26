@@ -1,14 +1,14 @@
 import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
-import { BudgetColumn } from '../../models/budget-column';
+import { BudgetColumn, IColumnSummary } from '../../models/budget-column';
 import { BudgetItemService } from '../../services/budget-item.service';
-import { concat, Observable, tap, toArray } from 'rxjs';
+import { BehaviorSubject, concat, Observable, ReplaySubject, Subject, tap, toArray } from 'rxjs';
 import { BudgetItem } from '../../models/budget-item';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { AlertService } from '../../../../services/alert.service';
 import { ItemAddEditComponent } from '../../modals/item-add-edit/item-add-edit.component';
 import { BudgetColumnService } from '../../services/budget-column.service';
-import { CategoryRepo } from '../../repos/category.repo';
 import { Category } from '../../models/category';
+import { CategoryService } from '../../services/category.service';
 
 @Component({
   selector: 'app-column-detail',
@@ -18,8 +18,11 @@ import { Category } from '../../models/category';
 export class ColumnDetailComponent implements OnInit {
   @Input() column!: BudgetColumn;
 
-  public items$!: Observable<BudgetItem[]>;
+  public items$!: BehaviorSubject<BudgetItem[]>;
   public loading = false;
+  public summary$!: ReplaySubject<IColumnSummary>;
+
+  private categories!: Map<string, Subject<Category>>;
 
   constructor(
     private readonly itemService: BudgetItemService,
@@ -27,28 +30,43 @@ export class ColumnDetailComponent implements OnInit {
     private readonly alert: AlertService,
     private readonly columnService: BudgetColumnService,
     private readonly cdRef: ChangeDetectorRef,
-    private readonly categoryRepo: CategoryRepo,
+    private readonly categoryService: CategoryService,
   ) {}
 
   ngOnInit(): void {
+    this.categories = new Map<string, Subject<Category>>();
+    this.summary$ = new ReplaySubject<IColumnSummary>(1);
+    this.items$ = new BehaviorSubject<BudgetItem[]>([]);
     this.setItems(this.column.items);
+    this.setSummary();
+  }
+
+  private setSummary() {
+    this.columnService.getSummary(this.column).subscribe((summary) => {
+      this.summary$.next(summary);
+    });
   }
 
   private setItems(items: string[]): void {
     this.loading = true;
-    this.items$ = concat(...items.map((item) => this.itemService.getOne(item))).pipe(
-      toArray(),
-      tap(() => {
-        this.loading = false;
-        this.cdRef.detectChanges();
-      }),
-    );
+    concat(...items.map((item) => this.itemService.getOne(item)))
+      .pipe(
+        toArray(),
+        tap(() => {
+          this.loading = false;
+          this.cdRef.detectChanges();
+        }),
+      )
+      .subscribe((results) => {
+        this.items$.next(results);
+      });
   }
 
   private refresh(): void {
-    this.columnService.getOne(this.column.url!).subscribe((column) => {
+    this.columnService.getOne(this.column.url).subscribe((column) => {
       this.setItems(column.items);
     });
+    this.setSummary();
   }
 
   public addItem(): void {
@@ -56,8 +74,9 @@ export class ColumnDetailComponent implements OnInit {
       if (changed && model) {
         this.loading = true;
         model.column = this.column.url;
-        this.itemService.createOne(model).subscribe();
-        this.refresh();
+        this.itemService.createOne(model).subscribe(() => {
+          this.refresh();
+        });
       }
     });
   }
@@ -67,24 +86,30 @@ export class ColumnDetailComponent implements OnInit {
       .openModal(this.modalService, ItemAddEditComponent, { model: item }, ['changed', 'model', 'deleted'])
       .subscribe(({ changed, model, deleted }) => {
         if (deleted) {
-          this.loading = true;
           this.alert
             .confirm(this.modalService, 'Delete Item', `Are you sure you wish to delete the item ${item.name}?`)
             .subscribe((confirmed) => {
               if (confirmed) {
-                this.itemService.removeOne(item).subscribe();
-                this.refresh();
+                this.loading = true;
+                this.itemService.removeOne(item).subscribe(() => {
+                  this.refresh();
+                });
               }
             });
         } else if (changed && model) {
           this.loading = true;
-          this.itemService.updateOne(model).subscribe();
-          this.refresh();
+          this.itemService.updateOne(model).subscribe(() => {
+            this.refresh();
+          });
         }
       });
   }
 
   public getCategory(category: string): Observable<Category> {
-    return this.categoryRepo.getEntity(category);
+    if (!this.categories.has(category)) {
+      this.categories.set(category, new ReplaySubject<Category>(1));
+      this.categoryService.getOne(category).subscribe((c) => this.categories.get(category)!.next(c));
+    }
+    return this.categories.get(category) as Observable<Category>;
   }
 }

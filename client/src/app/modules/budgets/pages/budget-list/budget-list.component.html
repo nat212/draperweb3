@@ -37,7 +37,7 @@
   </div>
 </form>
 <div class="table-responsive">
-  <table class="table table-hover table-borderless">
+  <table class="table table-hover table-borderless" aria-label="List of Budgets">
     <thead>
       <tr>
         <th scope="col">Name</th>
@@ -142,7 +142,7 @@
   </div>
 </div>
 <div class="table-responsive">
-  <table class="table table-hover table-borderless">
+  <table class="table table-hover table-borderless" aria-label="List of Categories">
     <thead>
       <tr>
         <th scope="col">Name</th>
@@ -183,4 +183,5 @@
   nextText="&rsaquo;"
   previousText="&lsaquo;"
   [hidden]="response.numPages === 1"
+  class="float-end"
 ></pagination>

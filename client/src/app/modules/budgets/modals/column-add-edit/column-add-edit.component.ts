@@ -1,8 +1,8 @@
-import {Component, ElementRef} from '@angular/core';
-import {BsModalRef} from 'ngx-bootstrap/modal';
-import {BudgetColumn} from '../../models/budget-column';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {FormModal} from '../../../../modals/form-modal/form-modal';
+import { Component } from '@angular/core';
+import { BsModalRef } from 'ngx-bootstrap/modal';
+import { BudgetColumn } from '../../models/budget-column';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormModal } from '../../../../modals/form-modal/form-modal';
 
 @Component({
   selector: 'app-column-add-edit',
@@ -17,11 +17,11 @@ export class ColumnAddEditComponent extends FormModal<BudgetColumn> {
   }
 
   protected patchForm(model: BudgetColumn): void {
-    this.form.patchValue({name: model.name});
+    this.form.patchValue({ name: model.name });
   }
 
   protected getModelFromForm(): BudgetColumn {
-    return new BudgetColumn({name: this.form.value.name});
+    return new BudgetColumn({ name: this.form.value.name });
   }
 
   constructor(formBuilder: FormBuilder, modalRef: BsModalRef) {

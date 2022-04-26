@@ -28,7 +28,7 @@ export class AutocompleteDirective<T> implements OnInit {
   private fuseIndex!: Fuse.FuseIndex<T>;
   private fuse!: Fuse<T>;
 
-  private matches: T[] = [];
+  protected matches: T[] = [];
 
   @Input('appAutocomplete') items: T[] = [];
   @Input() itemTemplate!: TemplateRef<any>;
@@ -53,7 +53,7 @@ export class AutocompleteDirective<T> implements OnInit {
     this.fuse = new Fuse(this.items, this.fuseOpts, this.fuseIndex);
   }
 
-  private show(items: T[]): void {
+  protected show(items: T[]): void {
     if (!this.isShown) {
       this.componentLoader.attach(AutocompleteContainerComponent).to('body').position({ attachment: 'bottom left' });
       this.isShown = true;
@@ -92,7 +92,7 @@ export class AutocompleteDirective<T> implements OnInit {
   }
 
   @HostListener('input', ['$event.target.value'])
-  protected onInput(value: string | null) {
+  onInput(value: string | null) {
     if (value) {
       this.filterResults(value);
     } else {
@@ -101,20 +101,20 @@ export class AutocompleteDirective<T> implements OnInit {
   }
 
   @HostListener('keydown.escape', ['$event'])
-  protected onEscapeClick(event: KeyboardEvent) {
+  onEscapeClick(event: KeyboardEvent) {
     this.hide();
     event.cancelBubble = true;
     event.preventDefault();
     return false;
   }
 
-  @HostListener('blur', ['$event'])
-  protected onBlur(event: FocusEvent) {
+  @HostListener('blur')
+  onBlur() {
     this.hide();
   }
 
   @HostListener('keydown.arrowUp', ['$event'])
-  protected onArrowUpPress(event: KeyboardEvent) {
+  onArrowUpPress(event: KeyboardEvent) {
     if (!this.isShown) {
       return;
     }
@@ -125,7 +125,7 @@ export class AutocompleteDirective<T> implements OnInit {
   }
 
   @HostListener('keydown.arrowDown', ['$event'])
-  protected onArrowDownPress(event: KeyboardEvent) {
+  onArrowDownPress(event: KeyboardEvent) {
     if (!this.isShown) {
       return;
     }
@@ -136,7 +136,7 @@ export class AutocompleteDirective<T> implements OnInit {
   }
 
   @HostListener('keyup.enter', ['$event'])
-  protected onEnterPress(event: KeyboardEvent) {
+  onEnterPress(event: KeyboardEvent) {
     if (!this.isShown) {
       return;
     }
@@ -150,17 +150,8 @@ export class AutocompleteDirective<T> implements OnInit {
   }
 
   @HostListener('keydown.tab', ['$event'])
-  protected onTabPress(event: KeyboardEvent) {
-    if (!this.isShown) {
-      return;
-    }
-    if (!this.selectedItem) {
-      return;
-    }
-    this.selectItem(this.selectedItem);
-    event.cancelBubble = true;
-    event.preventDefault();
-    return false;
+  onTabPress(event: KeyboardEvent) {
+    return this.onEnterPress(event);
   }
 
   protected filterResults(value: string): void {

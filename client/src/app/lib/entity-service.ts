@@ -1,6 +1,6 @@
 import { IModel, Model } from '../models/model';
 import { HttpClient } from '@angular/common/http';
-import { map, Observable, tap } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { Type } from '@angular/core';
 
 interface IBackendResponse<O> {
@@ -118,7 +118,7 @@ export abstract class EntityService<O extends IModel, T extends Model<O>, F exte
     if ((!model.id || model.id < 0) && !model.url) {
       throw new Error('Cannot update model without id or url.');
     }
-    const url = model.url || this.getModelUrl(model.id!);
+    const url = model.url || this.getModelUrl(model.id);
     return this.http.patch<O>(url, model.serialise()).pipe(map((item) => new this.entityClass(item)));
   }
 
@@ -126,7 +126,7 @@ export abstract class EntityService<O extends IModel, T extends Model<O>, F exte
     if ((!model.id || model.id < 0) && !model.url) {
       throw new Error('Cannot remove model without id or url.');
     }
-    const url = model.url || this.getModelUrl(model.id!);
+    const url = model.url || this.getModelUrl(model.id);
     return this.http.delete<null>(url);
   }
 }

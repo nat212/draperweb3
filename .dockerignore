@@ -1,0 +1,17 @@
+client/node_modules
+client/.node-version
+client/dist/
+.python-version
+.isort.cfg
+.prettierrc
+process-icons.py
+bs-icons
+.vscode
+.idea
+build
+.flake8
+.gitignore
+.git
+.gitmodules
+.editorconfig
+client/.angular

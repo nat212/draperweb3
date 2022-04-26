@@ -14,6 +14,4 @@ export interface IBsIcon {
 })
 export class IconService {
   public bsIcons: IBsIcon = bsIcons;
-
-  constructor() {}
 }

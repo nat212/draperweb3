@@ -11,7 +11,7 @@
   <div class="row" [hidden]="loading">
     <div class="col-12">
       <div class="table-responsive">
-        <table class="table table-borderless table-hover">
+        <table class="table table-borderless table-hover" aria-label="List of budget items">
           <thead>
             <tr>
               <th scope="col">Name</th>
@@ -41,17 +41,31 @@
               </td>
               <td>{{ item.amount | currency: 'ZAR':'symbol-narrow' }}</td>
             </tr>
+          </tbody>
+          <thead *ngIf="summary$ | async as summary" [hidden]="!(items$ | async)?.length">
             <tr>
-              <td colspan="3" class="text-end">
-                <button class="btn btn-sm btn-outline-success" (click)="addItem()">
-                  <i class="bi-plus"></i>
-                  Add Item
-                </button>
+              <th scope="col">Income</th>
+              <th scope="col">Expenses</th>
+              <th scope="col">Remaining</th>
+            </tr>
+            <tr>
+              <td class="text-success">
+                {{ summary.income | currency: 'ZAR':'symbol-narrow' }}
+              </td>
+              <td class="text-danger">
+                {{ summary.expenses | currency: 'ZAR':'symbol-narrow' }}
+              </td>
+              <td [class.text-success]="summary.remaining > 0" [class.text-danger]="summary.remaining < 0">
+                {{ summary.remaining | currency: 'ZAR':'symbol-narrow' }}
               </td>
             </tr>
-          </tbody>
+          </thead>
         </table>
       </div>
+      <button class="btn btn-sm btn-outline-success float-end" (click)="addItem()">
+        <i class="bi-plus"></i>
+        Add Item
+      </button>
     </div>
   </div>
 </div>

@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-lg-2 p-3 bg-white dw-nav-rail position-sticky top-0 d-none d-lg-block" style="height: 100vh">
       <h5 class="mb-4">DraperWeb</h5>
-      <nav class="nav-pills flex-column">
+      <nav class="nav-pills flex-column" aria-label="DraperWeb Navigation Drawer">
         <a
           *ngFor="let link of navLinks"
           [routerLink]="link.path"
@@ -23,7 +23,7 @@
           <button type="button" class="btn-close text-reset" (click)="hideDrawer()" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
-          <nav class="nav-pills flex-column" (click)="hideDrawer()">
+          <nav class="nav-pills flex-column" (click)="hideDrawer()" aria-label="DraperWeb Navigation Drawer">
             <a
               *ngFor="let link of navLinks"
               [routerLink]="link.path"

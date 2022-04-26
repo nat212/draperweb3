@@ -1,8 +1,10 @@
-import { Component, ElementRef } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormModal } from '../../../../modals/form-modal/form-modal';
 import { BudgetItem } from '../../models/budget-item';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
+import { Category } from '../../models/category';
+import { CategoryService } from '../../services/category.service';
 
 @Component({
   selector: 'app-item-add-edit',
@@ -10,8 +12,15 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
   styleUrls: ['./item-add-edit.component.scss'],
 })
 export class ItemAddEditComponent extends FormModal<BudgetItem> {
-  constructor(formBuilder: FormBuilder, modalRef: BsModalRef) {
+  constructor(formBuilder: FormBuilder, modalRef: BsModalRef, public readonly categoryService: CategoryService) {
     super(formBuilder, modalRef);
+  }
+
+  private categoryValidator(control: AbstractControl): ValidationErrors | null {
+    if (!control.value) {
+      return null;
+    }
+    return control.value instanceof Category ? null : { invalidCategory: true };
   }
 
   protected buildForm(): FormGroup {
@@ -19,17 +28,20 @@ export class ItemAddEditComponent extends FormModal<BudgetItem> {
       name: ['', Validators.required],
       amount: [0, Validators.compose([Validators.required, Validators.min(0)])],
       mode: ['expense', Validators.required],
+      category: [null, this.categoryValidator],
     });
   }
 
   protected getModelFromForm(): BudgetItem {
     const { name, amount, mode } = this.form.value;
+    const category: Category | null = this.form.value.category;
     const newAmount = mode === 'expense' ? -Math.abs(amount) : Math.abs(amount);
     return new BudgetItem({
       url: this.originalModel?.url,
       id: this.originalModel?.id,
       name: name,
       amount: newAmount,
+      category: category ? category.url : undefined,
     });
   }
 
@@ -41,5 +53,10 @@ export class ItemAddEditComponent extends FormModal<BudgetItem> {
       amount,
       mode,
     });
+    if (model.category) {
+      this.categoryService.getOne(model.category).subscribe((category) => {
+        this.form.patchValue({ category });
+      });
+    }
   }
 }

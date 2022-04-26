@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component } from '@angular/core';
 
 interface IShortcut {
   icon: string;
@@ -12,7 +12,7 @@ interface IShortcut {
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent {
   public ecosystemShortcuts: IShortcut[] = [
     {
       name: 'Draper Mail',
@@ -54,8 +54,4 @@ export class DashboardComponent implements OnInit {
       alt: 'Lidarr Logo',
     },
   ];
-
-  constructor() {}
-
-  ngOnInit(): void {}
 }

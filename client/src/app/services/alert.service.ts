@@ -8,7 +8,6 @@ import { combineLatest, Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class AlertService {
-  constructor() {}
 
   public confirm(
     modal: BsModalService,
@@ -27,15 +26,15 @@ export class AlertService {
   public openModal<T, K extends (keyof T)[]>(
     modal: BsModalService,
     component: Type<T>,
-    initialState: Partial<T> = {},
-    pluck: K
+    initialState?: Partial<T>,
+    pluck?: K,
   ): Observable<{ [k in K[number]]: T[k] }> {
     const modalRef = modal.show(component, { initialState });
     return combineLatest([modalRef.onHidden, modalRef.onHide]).pipe(
       take(1),
       map(() => modalRef.content!),
       map((content) =>
-        Object.assign({}, ...pluck.map((k) => ({ [k]: content[k] })))
+        Object.assign({}, ...(pluck || []).map((k) => ({ [k]: content[k] })))
       )
     );
   }

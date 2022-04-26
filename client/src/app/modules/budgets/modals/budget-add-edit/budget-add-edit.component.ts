@@ -1,9 +1,9 @@
-import {Component, ElementRef} from '@angular/core';
-import {Budget} from '../../models/budget';
-import {BsModalRef} from 'ngx-bootstrap/modal';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {BsDaterangepickerConfig} from 'ngx-bootstrap/datepicker';
-import {FormModal} from '../../../../modals/form-modal/form-modal';
+import { Component } from '@angular/core';
+import { Budget } from '../../models/budget';
+import { BsModalRef } from 'ngx-bootstrap/modal';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { BsDaterangepickerConfig } from 'ngx-bootstrap/datepicker';
+import { FormModal } from '../../../../modals/form-modal/form-modal';
 
 @Component({
   selector: 'app-budget-add-edit',
@@ -24,7 +24,7 @@ export class BudgetAddEditComponent extends FormModal<Budget> {
   }
 
   public clearDate(): void {
-    this.form.patchValue({date: null});
+    this.form.patchValue({ date: null });
   }
 
   protected buildForm(): FormGroup {
@@ -37,7 +37,7 @@ export class BudgetAddEditComponent extends FormModal<Budget> {
   protected getModelFromForm(): Budget {
     let startDate: string | null = null;
     let endDate: string | null = null;
-    const {name, date} = this.form.value;
+    const { name, date } = this.form.value;
     if (date) {
       startDate = date[0].toISOString().split('T')[0];
       endDate = date[1].toISOString().split('T')[0];

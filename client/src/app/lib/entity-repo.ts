@@ -1,6 +1,6 @@
 import { IModel, Model } from '../models/model';
 import { HttpClient } from '@angular/common/http';
-import { createState, select, Store } from '@ngneat/elf';
+import { createState, Store } from '@ngneat/elf';
 import {
   addEntities,
   deleteEntities,

@@ -8,6 +8,12 @@ export interface IBudgetColumn extends IModel {
   breakdown?: string;
 }
 
+export interface IColumnSummary {
+  expenses: number;
+  income: number;
+  remaining: number;
+}
+
 export class BudgetColumn extends Model<IBudgetColumn> {
   public name!: string;
   public budget?: string;
