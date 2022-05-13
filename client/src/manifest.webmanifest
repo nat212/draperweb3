@@ -1,7 +1,7 @@
 {
   "name": "DraperWeb",
   "short_name": "DraperWeb",
-  "theme_color": "#1976d2",
+  "theme_color": "#4db6ac",
   "background_color": "#eeeeee",
   "display": "standalone",
   "scope": "./",

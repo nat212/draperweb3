@@ -31,19 +31,20 @@ DEBUG = os.getenv("DRAPERWEB_MODE", "development") != "production"
 
 ALLOWED_HOSTS = ["*"]
 
-CSRF_TRUSTED_ORIGINS = [
-    "https://web.draper.net.za",
-    "https://v3.draper.net.za",
-    "https://www.draper.net.za",
-]
+if not DEBUG:
+    CSRF_TRUSTED_ORIGINS = [
+        "https://web.draper.net.za",
+        "https://v3.draper.net.za",
+        "https://www.draper.net.za",
+    ]
 
-USE_X_FORWARDED_HOST = True
-SECURE_PROXY_SSL_HEADER = ("X-Forwarded-Proto", "https")
-SESSION_COOKIE_SECURE = not DEBUG
-CSRF_COOKIE_SECURE = not DEBUG
-SECURE_CONTENT_TYPE_NOSNIFF = True
-SECURE_HSTS_PRELOAD = True
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    USE_X_FORWARDED_HOST = True
+    SECURE_PROXY_SSL_HEADER = ("X-Forwarded-Proto", "https")
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    SECURE_HSTS_PRELOAD = True
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 
 # Application definition
 

@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { InstallService } from "../../../../services/install.service";
 
 interface IShortcut {
   icon: string;
@@ -12,7 +13,7 @@ interface IShortcut {
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
   public ecosystemShortcuts: IShortcut[] = [
     {
       name: 'Draper Mail',
@@ -54,4 +55,14 @@ export class DashboardComponent {
       alt: 'Lidarr Logo',
     },
   ];
+
+  constructor(private readonly install: InstallService) {}
+
+  ngOnInit() {
+    this.install.listenForPrompt();
+  }
+
+  get installPrompt() {
+    return this.install.prompt;
+  }
 }

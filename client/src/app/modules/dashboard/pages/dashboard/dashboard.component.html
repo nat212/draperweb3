@@ -4,6 +4,17 @@
       <div class="row mb-4">
         <h1>Dashboard</h1>
       </div>
+      <div class="row mb-4" *ngIf="installPrompt">
+        <div class="col-12">
+          <alert type="primary" [dismissible]="true" #prompt>
+            <h4>Install DraperWeb</h4>
+            <p>Would you like to install DraperWeb to your device as a PWA?</p>
+            <button class="btn btn-sm btn-success" (click)="installPrompt.prompt(); prompt.close()">
+              <i class="bi-download"></i> Install
+            </button>
+          </alert>
+        </div>
+      </div>
       <div class="row mb-3">
         <h3>Shortcuts</h3>
       </div>
