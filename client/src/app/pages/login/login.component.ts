@@ -5,4 +5,8 @@ import { Component } from '@angular/core';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent {}
+export class LoginComponent {
+  login(): void {
+    window.open('/api/social/login/nextcloud?next=/', '_self');
+  }
+}
