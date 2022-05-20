@@ -18,11 +18,11 @@ ENV SOCIAL_AUTH_NEXTCLOUD_SECRET ""
 EXPOSE 80
 RUN apk add --no-cache libffi musl musl-dev libffi-dev build-base nginx
 COPY --from=client-build /build/dist/draperweb-client /var/www/draperweb/
-COPY docker/nginx.conf /etc/nginx/http.d/default.conf
 WORKDIR /app
 COPY Pipfile Pipfile.lock manage.py docker/entrypoint.sh ./
 RUN pip install --upgrade pip pipenv gunicorn && pipenv lock -r > requirements.txt
 RUN pip install -r requirements.txt
 RUN rm Pipfile Pipfile.lock requirements.txt
+COPY docker/nginx.conf /etc/nginx/http.d/default.conf
 ADD draperweb draperweb
 CMD ["/bin/sh", "entrypoint.sh"]

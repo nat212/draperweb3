@@ -31,6 +31,8 @@ DEBUG = os.getenv("DRAPERWEB_MODE", "development") != "production"
 
 ALLOWED_HOSTS = ["*"]
 
+STATIC_URL = "/static/"
+
 if not DEBUG:
     CSRF_TRUSTED_ORIGINS = [
         "https://web.draper.net.za",
@@ -45,6 +47,7 @@ if not DEBUG:
     SECURE_CONTENT_TYPE_NOSNIFF = True
     SECURE_HSTS_PRELOAD = True
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 # Application definition
 
@@ -139,11 +142,6 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 
 USE_TZ = True
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.0/howto/static-files/
-
-STATIC_URL = "static/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
