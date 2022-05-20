@@ -6,5 +6,9 @@
   "/static/": {
     "target": "http://localhost:8282",
     "secure": false
+  },
+  "/admin/": {
+    "target": "http://localhost:8282",
+    "secure": false
   }
 }
