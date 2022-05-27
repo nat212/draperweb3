@@ -1,4 +1,5 @@
 @import 'bootstrap/scss/functions';
+@import 'variables';
 
 // Colours
 $body-bg: #eee;
@@ -6,7 +7,7 @@ $primary: #4db6ac;
 $secondary: #ff4081;
 $success: #4caf50;
 $warning: #ffc107;
-$danger: #f44336;
+$danger: #ea655b;
 $border-radius: 24px;
 $border-radius-lg: 32px;
 $border-radius-sm: 16px;
@@ -25,6 +26,22 @@ $component-active-color: #000;
 
 // Form Control
 $input-focus-width: 1px;
+$input-height-border: 1px;
+$input-padding-x: 1.5rem;
+
+// Floating forms
+
+$form-floating-height:            add(3.5rem, $input-height-border) !default;
+$form-floating-line-height:       1.25 !default;
+$form-floating-padding-x:         $input-padding-x !default;
+$form-floating-padding-y:         1rem !default;
+$form-floating-input-padding-t:   1.625rem !default;
+$form-floating-input-padding-b:   .625rem !default;
+$form-floating-label-opacity:     .65 !default;
+$form-floating-label-transform:   scale(.85) translateY(-.5rem) translateX(.15rem) !default;
+$form-floating-transition:        opacity .1s ease-in-out, transform .1s ease-in-out !default;
+$form-floating-label-opacity: 0.65 !default;
+$form-floating-label-transform: scale(.85) translateY(-.6rem) translateX(.15rem);
 
 @import 'bootstrap/scss/variables';
 @import 'bootstrap/scss/mixins';
@@ -69,5 +86,134 @@ bs-daterangepicker-container {
 
   bs-days-calendar-view:last-child .bs-datepicker-head {
     border-radius: 0 3px 0 0;
+  }
+}
+
+.form-floating {
+  min-width: 200px;
+  position: relative;
+  &.form-floating-sm {
+    [class^="bi"] {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      left: 0.75rem;
+    }
+    .form-control:placeholder-shown {
+      ~ .form-floating-leading-text {
+        display: none;
+      }
+    }
+    .form-control:not(:placeholder-shown),
+    .form-control:focus,
+    .form-select.ng-dirty {
+      ~ .form-floating-leading-text {
+        display: unset;
+        position: absolute;
+        top: 19px;
+        left: 14px;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+      &::-webkit-inner-spin-button {
+        top: -0.35rem;
+        position: relative;
+      }
+    }
+    .form-control {
+      height: $floating-form-height-sm;
+      font-size: 14px;
+      ~ label {
+        padding-top: 0.6rem;
+        padding-bottom: 0.6rem;
+        line-height: $input-line-height;
+        opacity: $form-floating-label-opacity;
+      }
+    }
+    &.form-floating-with-icon {
+      .form-control {
+        padding: $form-floating-padding-y add($form-floating-padding-x, 0.75rem);
+
+        ~ label {
+          padding-left: add($form-floating-padding-x, 0.75rem);
+        }
+      }
+      .form-control:focus,
+      .form-control:not(:placeholder-shown),
+      .form-select.ng-dirty {
+        ~ label {
+          transform: scale(0.75) translateY(-0.6rem) translateX(0.75rem);
+        }
+      }
+    }
+    > .form-control:focus,
+    > .form-control:not(:placeholder-shown),
+    > .form-select.ng-dirty {
+      padding-top: 18px;
+      padding-bottom: 6px;
+      ~ label {
+        transform: scale(0.75) translateY(-0.6rem) translateX(0.55rem);
+      }
+    }
+  }
+  .form-control,
+  >.form-select {
+    height: $form-floating-height;
+    line-height: $form-floating-line-height;
+  }
+
+  >label {
+    position: absolute;
+    white-space: nowrap;
+    top: 0;
+    left: 0;
+    height: 100%; // allow textareas
+    padding: $form-floating-padding-y $form-floating-padding-x;
+    pointer-events: none;
+    border: $input-border-width solid transparent; // Required for aligning label's text with the input as it affects inner box model
+    transform-origin: 0 0;
+    @include transition($form-floating-transition);
+  }
+
+  // stylelint-disable no-duplicate-selectors
+  .form-control {
+    padding: $form-floating-padding-y $form-floating-padding-x;
+    &::placeholder {
+      color: transparent;
+    }
+    &:focus,
+    &:not(:placeholder-shown) {
+      padding-top: $form-floating-input-padding-t;
+      padding-bottom: $form-floating-input-padding-b;
+    }
+    // Duplicated because `:-webkit-autofill` invalidates other selectors when grouped
+    &:-webkit-autofill {
+      padding-top: $form-floating-input-padding-t;
+      padding-bottom: $form-floating-input-padding-b;
+      ~ label {
+        opacity: $form-floating-label-opacity;
+        transform: $form-floating-label-transform;
+      }
+    }
+  }
+
+  > .form-select {
+    padding-top: $form-floating-input-padding-t;
+    padding-bottom: $form-floating-input-padding-b;
+    ~ label { transform: none; }
+  }
+
+  .form-control:focus,
+  .form-control:not(:placeholder-shown),
+  > .form-select.ng-dirty {
+    ~ label {
+      opacity: $form-floating-label-opacity;
+      transform: $form-floating-label-transform;
+    }
+  }
+
+  textarea.form-control {
+    min-height: 150px;
+    padding-top: 20px !important;
   }
 }

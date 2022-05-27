@@ -6,33 +6,21 @@
     </button>
   </div>
   <div class="modal-body d-flex flex-column gap-3">
-    <div class="input-group">
-      <i class="bi-pencil input-group-text"></i>
-      <input type="text" class="form-control" formControlName="name" placeholder="Name *" name="category-name" />
-    </div>
-    <div class="input-group">
-      <i class="bi-pencil input-group-text"></i>
-      <input type="text" class="form-control" formControlName="description" placeholder="Description" name="category-description" />
-    </div>
-    <div class="input-group">
-      <ng-template #iconTemplate let-item="item">
-        <i class="{{ item.icon }} me-2"></i>
-        <span>{{ item.icon }}</span>
-      </ng-template>
-      <i class="bi-image-alt input-group-text"></i>
-      <input
-        type="text"
-        class="form-control"
-        formControlName="icon"
-        placeholder="Icon *"
-        name="category-icon"
-        autocomplete="off"
-        [appAutocomplete]="icons"
-        [filterKeys]="['title', 'tags', 'categories', 'icon']"
-        [itemTemplate]="iconTemplate"
-      />
-      <i *ngIf="isValidIcon(form.value.icon)" class="{{ form.value.icon }} input-group-text"></i>
-    </div>
+    <app-form-field label="Name" name="category-name" formControlName="name"></app-form-field>
+    <app-form-field label="Description" name="category-description" formControlName="description"></app-form-field>
+    <ng-template #iconTemplate let-item="item">
+      <i class="{{ item.icon }} me-2"></i>
+      <span>{{ item.icon }}</span>
+    </ng-template>
+    <app-form-field
+      label="Icon"
+      name="category-icon"
+      formControlName="icon"
+      [appAutocomplete]="icons"
+      [filterKeys]="['title', 'tags', 'categories', 'icon']"
+      [itemTemplate]="iconTemplate"
+      [icon]="isValidIcon(form.value.icon) ? getNormalisedIcon() : ''"
+    ></app-form-field>
   </div>
   <div class="modal-footer">
     <button class="btn btn-danger me-auto" type="button" (click)="delete()" *ngIf="model">

@@ -12,6 +12,7 @@ import { AuthenticatedComponent } from './pages/authenticated/authenticated.comp
 import { HTTP_INTERCEPTORS, HttpClientModule, HttpClientXsrfModule } from '@angular/common/http';
 import { AbsoluteUrlCsrfInterceptor } from './interceptors/absolute-url-csrf.interceptor';
 import { ConfirmComponent } from './modals/confirm/confirm.component';
+import { AppFormsModule } from "./modules/forms/forms.module";
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, AuthenticatedComponent, ConfirmComponent],
@@ -31,6 +32,7 @@ import { ConfirmComponent } from './modals/confirm/confirm.component';
       cookieName: environment.xsrfCookieName,
       headerName: environment.xsrfHeaderName,
     }),
+    AppFormsModule,
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AbsoluteUrlCsrfInterceptor, multi: true }],
   bootstrap: [AppComponent],

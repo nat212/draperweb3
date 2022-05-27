@@ -1,0 +1,51 @@
+<div class="form-floating form-floating-sm" [class.form-floating-with-icon]="!!icon">
+  <i *ngIf="icon" class="{{ mappedIcon }}"></i>
+  <input
+    *ngIf="!datePicker && !dateRangePicker"
+    [autocomplete]="autocomplete"
+    [type]="type"
+    class="form-control"
+    [value]="value"
+    (blur)="onInputBlur()"
+    (input)="onInput($event)"
+    [id]="id"
+    [name]="name"
+    [attr.aria-label]="label"
+    [placeholder]="label"
+  />
+  <input
+    *ngIf="datePicker"
+    [autocomplete]="autocomplete"
+    [type]="type"
+    class="form-control"
+    [value]="value"
+    (blur)="onInputBlur()"
+    (input)="onInput($event)"
+    [id]="id"
+    [placeholder]="label"
+    [name]="name"
+    [attr.aria-label]="label"
+    bsDatepicker
+    [triggers]="triggers"
+    (bsValueChange)="onDatePickerValueChanged($event)"
+  />
+  <input
+    *ngIf="dateRangePicker"
+    [autocomplete]="autocomplete"
+    [type]="type"
+    class="form-control"
+    [value]="value"
+    (blur)="onInputBlur()"
+    (input)="onInput($event)"
+    [id]="id"
+    [placeholder]="label"
+    [attr.aria-label]="label"
+    bsDaterangepicker
+    [triggers]="triggers"
+    [bsConfig]="rangePickerConfig"
+    (bsValueChange)="onDatePickerValueChanged($event)"
+  />
+
+  <span class="form-floating-leading-text" *ngIf="leadingText">{{ leadingText }}</span>
+  <label id="{{ id }}-label" for="{{ id }}" class="form-floating-label">{{ label }}</label>
+</div>

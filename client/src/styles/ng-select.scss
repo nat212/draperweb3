@@ -1,0 +1,158 @@
+@import '@ng-select/ng-select/themes/default.theme.css';
+@import 'bootstrap/scss/variables';
+@import 'variables';
+
+.ng-select {
+  width: 100%;
+  min-width: 200px;
+  &.ng-select-opened>.ng-select-container {
+    background-color: $input-focus-bg !important;
+    border-color: $input-focus-bg !important;
+    box-shadow: none;
+  }
+  &.ng-select-focused:not(.ng-select-opened)>.ng-select-container {
+    border-color: $input-bg;
+  }
+  .ng-select-container {
+    border-color: $input-bg;
+    border-radius: $btn-border-radius !important;
+    background-color: $input-bg;
+    color: $body-color;
+    box-shadow: none !important;
+    transition: all 0.2s ease-in-out;
+    min-height: $floating-form-height-sm;
+    .ng-value-container {
+      .ng-input>input { color: $body-color !important;}
+      //.ng-placeholder { color: $color-white-glass-70; }
+    }
+    &.ng-has-value {
+      .ng-placeholder {
+        display: block;
+        transform: scale(0.75) translateY(-1rem);
+        transform-origin: left;
+        position: absolute;
+        //color: $color-white-glass-50;
+      }
+      .ng-input>input { color: $body-color !important; }
+    }
+  }
+  &.ng-untouched {
+    .ng-select-container.ng-has-value {
+      .ng-clear-wrapper { display: none; }
+    }
+  }
+  &.ng-touched {
+    &.ng-invalid {
+      .ng-select-container { border: 1px solid $danger !important; }
+    }
+  }
+  .ng-arrow-wrapper {
+    width: 38px;
+    padding:0;
+    .ng-arrow {
+      top: auto !important;
+      border: none;
+      width: auto !important;
+      height: auto !important;
+      //&:after { @include bi-font("\f282"); }
+    }
+  }
+  .ng-clear-wrapper {
+    width: auto !important;
+    padding:0 2px 0 6px;
+    color: white;
+    text-align: center;
+    &::after {
+      //@include bi-font("\f62a");
+      font-size: 1.4rem;
+      vertical-align: middle;
+    }
+    .ng-clear {
+      display: none !important;
+      top: auto !important;
+      border: none;
+      width: auto !important;
+      height: auto !important;
+
+    }
+  }
+  &.ng-select-single {
+    .ng-select-container {
+      .ng-value-container  {
+        .ng-input {
+          top: 50%;
+          transform: translateY(-50%);
+        }
+      }
+      &.ng-has-value {
+        .ng-value, .ng-input {
+          padding-top: 17px;
+          padding-bottom: 4px;
+        }
+      }
+    }
+  }
+  &.ng-select-multiple {
+    .ng-select-container {
+      .ng-value-container  {
+        .ng-placeholder { top: auto; }
+        .ng-value {
+          display: flex;
+          align-items: center;
+          flex-direction: row-reverse;
+          //background: $color-white-glass-10;
+          color: white;
+          padding: 4px 8px;
+          font-size: $input-font-size;
+          border-radius: $border-radius-sm;
+          &-icon {
+            border: none !important;
+            &:hover {
+              color: $primary !important;
+              background: none !important;
+            }
+          }
+        }
+      }
+      &.ng-has-value {
+        .ng-placeholder {
+          display: none;
+        }
+      }
+    }
+  }
+  &.ng-select-disabled {
+    .ng-select-container {
+      cursor: not-allowed;
+      //background-color: fade-out($color-charcoal2, 0.7);
+      color: fade-out($input-color, 0.2);
+    }
+  }
+}
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-disabled {
+  //color: $color-charcoal1; opacity: 0.6;
+}
+
+.ng-dropdown-panel.ng-select-bottom {
+  margin-top: $dropdown-padding-x;
+  border-radius: $btn-border-radius;
+  .ng-dropdown-panel-items {
+    padding: $dropdown-padding-x;
+    .ng-option {
+      border-radius: $btn-border-radius !important;
+      + .ng-option { margin-top: $dropdown-item-padding-y; }
+      &:hover {
+        //background: $color-black-glass-10;
+      }
+      &.ng-option-marked {
+        //background: $color-black-glass-10;
+      }
+      &.ng-option-selected  {
+        .ng-option-label { font-weight: normal; }
+        background: $primary;
+        color: white;
+      }
+    }
+  }
+}

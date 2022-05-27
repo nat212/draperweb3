@@ -6,7 +6,7 @@ import { Component, EventEmitter, Input, Output, TemplateRef } from '@angular/co
   styleUrls: ['./autocomplete-container.component.scss'],
   host: {
     class: 'dropdown dropdown-menu show',
-    style: 'z-index: 10000',
+    style: 'z-index: 10000; margin-left: 16px',
   },
 })
 export class AutocompleteContainerComponent<T> {

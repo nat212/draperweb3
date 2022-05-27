@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid px-0 px-lg-1">
   <div class="row mb-4">
     <div class="col-2 col-lg-1 d-flex justify-content-center align-items-center">
       <button class="btn btn-sm" [routerLink]="['..']">
@@ -26,7 +26,7 @@
   </div>
   <div class="row" [hidden]="loading">
     <div class="col-12" *ngIf="columns$ | async as columns">
-      <tabset type="pills" [justified]="true" class="d-none d-lg-block">
+      <tabset [justified]="true" class="d-none d-lg-block">
         <tab *ngFor="let column of columns">
           <ng-template tabHeading>
             {{ column.name }}
@@ -36,7 +36,7 @@
           <app-column-detail [column]="column"></app-column-detail>
         </tab>
       </tabset>
-      <tabset type="pills" [vertical]="true" class="d-block d-lg-none">
+      <tabset [vertical]="true" class="d-block d-lg-none">
         <tab *ngFor="let column of columns">
           <ng-template tabHeading>
             {{ column.name }}

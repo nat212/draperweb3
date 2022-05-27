@@ -11,27 +11,15 @@
     </button>
   </div>
   <div class="modal-body d-flex flex-column gap-3">
-    <div class="input-group">
-      <i class="bi-pencil input-group-text"></i>
-      <input type="text" name="budget-name" autocomplete="none" formControlName="name" class="form-control"
-             placeholder="Budget Name" appAutofocus />
-    </div>
-    <div class="input-group">
-      <i class="bi-calendar input-group-text"></i>
-      <input
-        type="text"
-        name="budget-date"
-        autocomplete="off"
-        formControlName="date"
-        class="form-control"
-        placeholder="Budget Dates"
-        bsDaterangepicker
-        [bsConfig]="rangePickerConfig"
-      />
-      <button *ngIf="form.value.date" type="button" class="btn btn-warning" (click)="clearDate()">
-        <i class="bi-x"></i>
-      </button>
-    </div>
+    <app-form-field label="Budget Name" formControlName="name" name="budget-name" autocomplete="none" appAutofocus></app-form-field>
+    <app-form-field
+      label="Budget Dates"
+      formControlName="date"
+      name="budget-date"
+      autocomplete="off"
+      icon="calendar"
+      [dateRangePicker]="true"
+    ></app-form-field>
   </div>
 
   <div class="modal-footer">

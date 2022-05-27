@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { Budget } from '../../models/budget';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { BsDaterangepickerConfig } from 'ngx-bootstrap/datepicker';
 import { FormModal } from '../../../../modals/form-modal/form-modal';
 
 @Component({
@@ -11,14 +10,6 @@ import { FormModal } from '../../../../modals/form-modal/form-modal';
   styleUrls: ['./budget-add-edit.component.scss'],
 })
 export class BudgetAddEditComponent extends FormModal<Budget> {
-  public rangePickerConfig: Partial<BsDaterangepickerConfig> = {
-    adaptivePosition: true,
-    showClearButton: true,
-    clearButtonLabel: 'Clear',
-    dateInputFormat: 'Do MMM YYYY',
-    rangeInputFormat: 'Do MMM YYYY',
-  };
-
   constructor(modalRef: BsModalRef, formBuilder: FormBuilder) {
     super(formBuilder, modalRef);
   }

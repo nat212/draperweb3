@@ -19,7 +19,9 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { AutofocusModule } from '../utils/autofocus/autofocus.module';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { CategoryAddEditComponent } from './modals/category-add-edit/category-add-edit.component';
-import {AutocompleteModule} from "../widgets/autocomplete/autocomplete.module";
+import { AutocompleteModule } from '../widgets/autocomplete/autocomplete.module';
+import { AppFormsModule } from '../forms/forms.module';
+import { NgSelectModule } from "@ng-select/ng-select";
 
 @NgModule({
   declarations: [
@@ -46,6 +48,8 @@ import {AutocompleteModule} from "../widgets/autocomplete/autocomplete.module";
     PaginationModule,
     FormsModule,
     AutocompleteModule,
+    AppFormsModule,
+    NgSelectModule,
   ],
 })
 export class BudgetsModule {}

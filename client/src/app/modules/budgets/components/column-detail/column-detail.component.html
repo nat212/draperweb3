@@ -1,4 +1,4 @@
-<div class="container-fluid mt-3">
+<div class="container-fluid mt-3 px-0 px-lg-1">
   <div class="row" [hidden]="!loading">
     <div class="col-12 d-flex flex-row align-items-center justify-content-center gap-3">
       <div class="spinner-border text-primary" role="status">
@@ -23,12 +23,7 @@
             <tr *ngIf="!items.length">
               <td colspan="3" class="text-center">No items</td>
             </tr>
-            <tr
-              *ngFor="let item of items"
-              (click)="editItem(item)"
-              [class.text-danger]="item.amount < 0"
-              [class.text-success]="item.amount > 0"
-            >
+            <tr *ngFor="let item of items" (click)="editItem(item)">
               <td>{{ item.name }}</td>
               <td>
                 <ng-container *ngIf="item.category; else noCategory">
@@ -39,7 +34,9 @@
                 </ng-container>
                 <ng-template #noCategory>N/A</ng-template>
               </td>
-              <td>{{ item.amount | currency: 'ZAR':'symbol-narrow' }}</td>
+              <td [class.text-danger]="item.amount < 0" [class.text-success]="item.amount > 0">
+                {{ item.amount | currency: 'ZAR':'symbol-narrow' }}
+              </td>
             </tr>
           </tbody>
           <thead *ngIf="summary$ | async as summary" [hidden]="!(items$ | async)?.length">

@@ -82,4 +82,12 @@ export class CategoryAddEditComponent extends FormModal<Category> {
     }
     return this.icons.find((i) => i.icon === icon) !== undefined;
   }
+
+  public getNormalisedIcon(): string | undefined {
+    const icon = this.form.value.icon;
+    if (!icon) {
+      return;
+    }
+    return icon instanceof Icon ? icon.icon : icon;
+  }
 }

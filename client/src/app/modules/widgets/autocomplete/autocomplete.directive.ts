@@ -55,7 +55,9 @@ export class AutocompleteDirective<T> implements OnInit {
 
   protected show(items: T[]): void {
     if (!this.isShown) {
-      this.componentLoader.attach(AutocompleteContainerComponent).to('body').position({ attachment: 'bottom left' });
+      this.componentLoader.attach(AutocompleteContainerComponent).to('body').position({
+        attachment: 'bottom left'
+      });
       this.isShown = true;
       this.componentLoader.show({ items, activeIndex: 0, itemTemplate: this.itemTemplate });
       this.componentLoader.instance!.itemSelected.pipe(takeUntil(this.hide$)).subscribe((item) => {

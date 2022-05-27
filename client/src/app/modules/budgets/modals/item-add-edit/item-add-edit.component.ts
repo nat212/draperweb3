@@ -16,7 +16,7 @@ export class ItemAddEditComponent extends FormModal<BudgetItem> {
     super(formBuilder, modalRef);
   }
 
-  private categoryValidator(control: AbstractControl): ValidationErrors | null {
+  private static categoryValidator(control: AbstractControl): ValidationErrors | null {
     if (!control.value) {
       return null;
     }
@@ -26,9 +26,9 @@ export class ItemAddEditComponent extends FormModal<BudgetItem> {
   protected buildForm(): FormGroup {
     return this.formBuilder.group({
       name: ['', Validators.required],
-      amount: [0, Validators.compose([Validators.required, Validators.min(0)])],
+      amount: [null, Validators.compose([Validators.required, Validators.min(0)])],
       mode: ['expense', Validators.required],
-      category: [null, this.categoryValidator],
+      category: [null, ItemAddEditComponent.categoryValidator],
     });
   }
 
