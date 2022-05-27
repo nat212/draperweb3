@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { InstallService } from "../../../../services/install.service";
+import { Component } from '@angular/core';
+import { InstallService } from '../../../../services/install.service';
+import { UpdateService } from '../../../../services/update.service';
+import { Observable } from 'rxjs';
 
 interface IShortcut {
   icon: string;
@@ -13,7 +15,7 @@ interface IShortcut {
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent {
   public ecosystemShortcuts: IShortcut[] = [
     {
       name: 'Draper Mail',
@@ -56,13 +58,17 @@ export class DashboardComponent implements OnInit {
     },
   ];
 
-  constructor(private readonly install: InstallService) {}
-
-  ngOnInit() {
-    this.install.listenForPrompt();
-  }
+  constructor(private readonly install: InstallService, private readonly updates: UpdateService) {}
 
   get installPrompt() {
     return this.install.prompt;
+  }
+
+  get versionReady$(): Observable<boolean> {
+    return this.updates.versionReady$;
+  }
+
+  update() {
+    window.location.reload();
   }
 }

@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { SwUpdate } from "@angular/service-worker";
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<any>;
@@ -10,7 +9,9 @@ interface BeforeInstallPromptEvent extends Event {
 })
 export class InstallService {
   private promptEvent?: BeforeInstallPromptEvent;
-  constructor(private readonly update: SwUpdate) { }
+  constructor() {
+    this.listenForPrompt();
+  }
 
   public listenForPrompt(): void {
     window.addEventListener('beforeinstallprompt', (e: Event) => {

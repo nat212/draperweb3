@@ -15,6 +15,17 @@
           </alert>
         </div>
       </div>
+      <div class="row mb-4" *ngIf="versionReady$ | async">
+        <div class="col-12">
+          <alert type="primary" [dismissible]="true" #updatePrompt>
+            <h4>Updates Available!</h4>
+            <p>An update to DraperWeb has been downloaded. Would you like to activate the update now?</p>
+            <button class="btn btn-sm btn-success" (click)="updatePrompt.close(); update()">
+              <i class="bi-download"></i> Update
+            </button>
+          </alert>
+        </div>
+      </div>
       <div class="row mb-3">
         <h3>Shortcuts</h3>
       </div>
