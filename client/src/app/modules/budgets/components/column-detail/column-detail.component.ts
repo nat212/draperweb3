@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { BudgetColumn, IColumnSummary } from '../../models/budget-column';
 import { BudgetItemService } from '../../services/budget-item.service';
-import { BehaviorSubject, concat, Observable, ReplaySubject, Subject, tap, toArray } from 'rxjs';
+import { BehaviorSubject, concat, first, Observable, ReplaySubject, Subject, tap, toArray } from 'rxjs';
 import { BudgetItem } from '../../models/budget-item';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { AlertService } from '../../../../services/alert.service';
@@ -62,20 +62,37 @@ export class ColumnDetailComponent implements OnInit {
       });
   }
 
-  private refresh(): void {
-    this.columnService.getOne(this.column.url).subscribe((column) => {
-      this.setItems(column.items);
+  private addItem(item: BudgetItem): void {
+    this.items$.pipe(first()).subscribe(items => {
+      this.items$.next([...items, item]);
+      this.loading = false;
     });
-    this.setSummary();
   }
 
-  public addItem(): void {
+  private removeItem(item: BudgetItem): void {
+    this.items$.pipe(first()).subscribe(items => {
+      this.items$.next(items.filter((i) => i.url !== item.url));
+      this.loading = false;
+    });
+  }
+
+  private updateItem(item: BudgetItem): void {
+    this.items$.pipe(first()).subscribe(items => {
+      const index = items.findIndex((i) => i.url === item.url);
+      const itemsCopy = [...items];
+      itemsCopy[index] = item;
+      this.items$.next(itemsCopy);
+      this.loading = false;
+    });
+  }
+
+  public createItem(): void {
     this.alert.openModal(this.modalService, ItemAddEditComponent, {}, ['changed', 'model']).subscribe(({ changed, model }) => {
       if (changed && model) {
-        this.loading = true;
         model.column = this.column.url;
-        this.itemService.createOne(model).subscribe(() => {
-          this.refresh();
+        this.itemService.createOne(model).subscribe((item) => {
+          this.addItem(item);
+          this.setSummary();
         });
       }
     });
@@ -90,16 +107,16 @@ export class ColumnDetailComponent implements OnInit {
             .confirm(this.modalService, 'Delete Item', `Are you sure you wish to delete the item ${item.name}?`)
             .subscribe((confirmed) => {
               if (confirmed) {
-                this.loading = true;
                 this.itemService.removeOne(item).subscribe(() => {
-                  this.refresh();
+                  this.removeItem(item);
+                  this.setSummary();
                 });
               }
             });
         } else if (changed && model) {
-          this.loading = true;
-          this.itemService.updateOne(model).subscribe(() => {
-            this.refresh();
+          this.itemService.updateOne(model).subscribe((result) => {
+            this.updateItem(result);
+            this.setSummary();
           });
         }
       });
