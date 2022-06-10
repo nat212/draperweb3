@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { BudgetColumn, IColumnSummary } from '../../models/budget-column';
 import { BudgetItemService } from '../../services/budget-item.service';
-import { BehaviorSubject, concat, first, Observable, ReplaySubject, Subject, tap, toArray } from 'rxjs';
+import { BehaviorSubject, first, ReplaySubject, Subject } from 'rxjs';
 import { BudgetItem } from '../../models/budget-item';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { AlertService } from '../../../../services/alert.service';
@@ -47,37 +47,26 @@ export class ColumnDetailComponent implements OnInit {
     });
   }
 
-  private setItems(items: string[]): void {
-    this.loading = true;
-    concat(...items.map((item) => this.itemService.getOne(item)))
-      .pipe(
-        toArray(),
-        tap(() => {
-          this.loading = false;
-          this.cdRef.detectChanges();
-        }),
-      )
-      .subscribe((results) => {
-        this.items$.next(results);
-      });
+  private setItems(items: BudgetItem[]): void {
+    this.items$.next(items);
   }
 
   private addItem(item: BudgetItem): void {
-    this.items$.pipe(first()).subscribe(items => {
+    this.items$.pipe(first()).subscribe((items) => {
       this.items$.next([...items, item]);
       this.loading = false;
     });
   }
 
   private removeItem(item: BudgetItem): void {
-    this.items$.pipe(first()).subscribe(items => {
+    this.items$.pipe(first()).subscribe((items) => {
       this.items$.next(items.filter((i) => i.url !== item.url));
       this.loading = false;
     });
   }
 
   private updateItem(item: BudgetItem): void {
-    this.items$.pipe(first()).subscribe(items => {
+    this.items$.pipe(first()).subscribe((items) => {
       const index = items.findIndex((i) => i.url === item.url);
       const itemsCopy = [...items];
       itemsCopy[index] = item;
@@ -120,13 +109,5 @@ export class ColumnDetailComponent implements OnInit {
           });
         }
       });
-  }
-
-  public getCategory(category: string): Observable<Category> {
-    if (!this.categories.has(category)) {
-      this.categories.set(category, new ReplaySubject<Category>(1));
-      this.categoryService.getOne(category).subscribe((c) => this.categories.get(category)!.next(c));
-    }
-    return this.categories.get(category) as Observable<Category>;
   }
 }

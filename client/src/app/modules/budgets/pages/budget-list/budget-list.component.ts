@@ -11,6 +11,7 @@ import { PaginatedResponse } from '../../../../lib/entity-service';
 import { Category } from '../../models/category';
 import { CategoryService } from '../../services/category.service';
 import { CategoryAddEditComponent } from '../../modals/category-add-edit/category-add-edit.component';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-budget-list',
@@ -78,6 +79,8 @@ export class BudgetListComponent implements OnInit {
     private readonly bsModalService: BsModalService,
     private readonly alert: AlertService,
     private readonly categoryService: CategoryService,
+    private readonly router: Router,
+    private readonly route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
@@ -158,5 +161,28 @@ export class BudgetListComponent implements OnInit {
           this.categoryService.updateOne(model).subscribe(() => this.categoryRefresh$.next());
         }
       });
+  }
+
+  removeBudget(budget: Budget) {
+    this.alert
+      .confirm(this.bsModalService, 'Delete Budget', `Are you sure you wish to delete ${budget.name}? All associated data will be lost.`)
+      .subscribe((result) => {
+        if (result) {
+          this.service.removeOne(budget).subscribe(() => {
+            this.refresh$.next();
+          });
+        }
+      });
+  }
+
+  importBudget(budget: Budget) {
+    this.alert.openModal(this.bsModalService, BudgetAddEditComponent, undefined, ['changed', 'model']).subscribe(({ changed, model }) => {
+      console.log(changed, model);
+      if (changed && model) {
+        this.service.createOne(model).subscribe((added) => {
+          this.router.navigate([added.id, 'import'], { queryParams: { from: budget.id }, relativeTo: this.route });
+        });
+      }
+    });
   }
 }

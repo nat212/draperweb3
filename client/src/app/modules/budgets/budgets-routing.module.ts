@@ -4,6 +4,7 @@ import { BudgetListComponent } from './pages/budget-list/budget-list.component';
 import { BudgetDetailComponent } from './pages/budget-detail/budget-detail.component';
 import { BudgetResolver } from './resolvers/budget.resolver';
 import { CategoryGuard } from './repos/category.repo';
+import { BudgetImportComponent } from "./pages/budget-import/budget-import.component";
 
 const routes: Routes = [
   { path: '', component: BudgetListComponent, data: { title: 'Budgets' } },
@@ -13,6 +14,12 @@ const routes: Routes = [
     canActivate: [CategoryGuard],
     resolve: { budget: BudgetResolver },
   },
+  {
+    path: ':id/import',
+    component: BudgetImportComponent,
+    canActivate: [CategoryGuard],
+    resolve: { budget: BudgetResolver },
+  }
 ];
 
 @NgModule({

@@ -1,13 +1,13 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {BehaviorSubject, concat, filter, map, Observable, Subject, switchMap, tap, toArray} from 'rxjs';
-import {Budget} from '../../models/budget';
-import {BudgetColumn} from '../../models/budget-column';
-import {BudgetColumnService} from '../../services/budget-column.service';
-import {ColumnAddEditComponent} from '../../modals/column-add-edit/column-add-edit.component';
-import {BudgetService} from '../../services/budget.service';
-import {AlertService} from '../../../../services/alert.service';
-import {BsModalService} from 'ngx-bootstrap/modal';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { BehaviorSubject, filter, map, Observable, Subject, switchMap, tap } from 'rxjs';
+import { Budget } from '../../models/budget';
+import { BudgetColumn } from '../../models/budget-column';
+import { BudgetColumnService } from '../../services/budget-column.service';
+import { ColumnAddEditComponent } from '../../modals/column-add-edit/column-add-edit.component';
+import { BudgetService } from '../../services/budget.service';
+import { AlertService } from '../../../../services/alert.service';
+import { BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-budget-detail',
@@ -35,28 +35,31 @@ export class BudgetDetailComponent implements OnInit {
     this.loading = true;
     this.refreshColumns$ = new Subject<void>();
     this.budget$ = new BehaviorSubject<Budget>(this.route.snapshot.data['budget']);
-    this.route.data.pipe(map(({budget}) => budget)).subscribe((budget) => {
+    this.route.data.pipe(map(({ budget }) => budget)).subscribe((budget) => {
       this.budget$.next(budget);
       this.budget = budget;
     });
     this.columns$ = this.budget$.pipe(
       filter((budget) => !!budget),
-      switchMap((budget) => concat(...budget.columns!.map((c) => this.columnService.getOne(c))).pipe(toArray())),
+      map((budget) => budget.columns!),
       tap(() => {
         this.loading = false;
         this.cdRef.detectChanges();
       }),
     );
-    this.refreshColumns$.pipe(
-      tap(() => this.loading = true),
-      switchMap(() => this.budgetService.getOne(this.budget.url))).subscribe((budget) => {
-      this.budget$.next(budget);
-      this.budget = budget;
-    });
+    this.refreshColumns$
+      .pipe(
+        tap(() => (this.loading = true)),
+        switchMap(() => this.budgetService.getOne(this.budget.url)),
+      )
+      .subscribe((budget) => {
+        this.budget$.next(budget);
+        this.budget = budget;
+      });
   }
 
   public addColumn(): void {
-    this.alert.openModal(this.modal, ColumnAddEditComponent, {}, ['changed', 'model']).subscribe(({changed, model}) => {
+    this.alert.openModal(this.modal, ColumnAddEditComponent, {}, ['changed', 'model']).subscribe(({ changed, model }) => {
       if (changed && model) {
         this.loading = true;
         model.budget = this.budget.url;

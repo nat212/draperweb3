@@ -1,0 +1,77 @@
+<div class="container-fluid p-0">
+  <div class="row mb-2">
+    <div class="col-12" *ngIf="budget$ | async as budget">
+      <h2>{{ budget.name }}</h2>
+    </div>
+  </div>
+  <ng-container *ngIf="from$ | async as from">
+    <div class="row">
+      <div class="col-12">
+        <h3>Importing From {{ from.name }}</h3>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <tabset [justified]="true" [vertical]="false" class="d-none d-lg-block">
+          <tab *ngFor="let column of from.columns">
+            <ng-template tabHeading>
+              {{ column.name }}
+            </ng-template>
+            <ng-container [ngTemplateOutlet]="columnTemplate" [ngTemplateOutletContext]="{ column: column }"></ng-container>
+          </tab>
+        </tabset>
+        <tabset [justified]="true" [vertical]="true" class="d-block d-lg-none">
+          <tab *ngFor="let column of from.columns">
+            <ng-template tabHeading>
+              {{ column.name }}
+            </ng-template>
+            <ng-container [ngTemplateOutlet]="columnTemplate" [ngTemplateOutletContext]="{ column: column }"></ng-container>
+          </tab>
+        </tabset>
+      </div>
+    </div>
+  </ng-container>
+  <div class="row">
+    <div class="col-12">
+      <button type="button" class="float-end btn btn-primary" (click)="submit()">
+        <i class="bi-download me-1"></i>
+        Import
+      </button>
+    </div>
+  </div>
+</div>
+<ng-template #columnTemplate let-column="column">
+  <div class="table-responsive">
+    <table class="table table-borderless table-hover">
+      <thead>
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">Name</th>
+          <th scope="col">Amount</th>
+          <th scope="col">Category</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of column.items" class="body-row">
+          <th scope="row">
+            <div class="form-check">
+              <input type="checkbox" class="form-check-input" [defaultChecked]="isItemSelected(column, item)" (change)="onCheckboxChange(column, item, $event)" />
+            </div>
+          </th>
+          <td>{{ item.name }}</td>
+          <td [class.text-danger]="item.amount < 0" [class.text-success]="item.amount > 0">{{ item.amount | currency: 'ZAR': 'symbol-narrow' }}</td>
+          <td>
+            <ng-container *ngIf="item.category as category; else noCategory">
+              <i class="me-3" [class]="category.icon"></i>
+              <span>{{ category.name }}</span>
+            </ng-container>
+            <ng-template #noCategory>N/A</ng-template>
+          </td>
+        </tr>
+      <tr *ngIf="!column.items.length">
+        <td colspan="4" class="text-center">No items</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</ng-template>

@@ -129,4 +129,9 @@ export abstract class EntityService<O extends IModel, T extends Model<O>, F exte
     const url = model.url || this.getModelUrl(model.id);
     return this.http.delete<null>(url);
   }
+
+  public performAction<A, R>(method: 'GET' | 'POST' | 'PUT' | 'PATCH', model: T, action: keyof T, data: A): Observable<R> {
+    const actionUrl = model[action] as any as string;
+    return this.http.request<R>(method, actionUrl, { body: data });
+  }
 }

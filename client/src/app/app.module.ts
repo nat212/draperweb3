@@ -13,7 +13,6 @@ import { HTTP_INTERCEPTORS, HttpClientModule, HttpClientXsrfModule } from '@angu
 import { AbsoluteUrlCsrfInterceptor } from './interceptors/absolute-url-csrf.interceptor';
 import { ConfirmComponent } from './modals/confirm/confirm.component';
 import { AppFormsModule } from './modules/forms/forms.module';
-import { InstallService } from './services/install.service';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, AuthenticatedComponent, ConfirmComponent],
@@ -35,7 +34,7 @@ import { InstallService } from './services/install.service';
     }),
     AppFormsModule,
   ],
-  providers: [{ provide: HTTP_INTERCEPTORS, useClass: AbsoluteUrlCsrfInterceptor, multi: true }, InstallService],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: AbsoluteUrlCsrfInterceptor, multi: true }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

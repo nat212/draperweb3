@@ -1,10 +1,11 @@
 import {IModel, Model} from '../../../models/model';
+import { BudgetColumn, IBudgetColumn } from "./budget-column";
 
 export interface IBudget extends IModel {
   name: string;
   start_date?: string | null;
   end_date?: string | null;
-  columns?: string[];
+  columns?: IBudgetColumn[];
   import_columns?: string;
 }
 
@@ -12,7 +13,7 @@ export class Budget extends Model<IBudget> {
   public name!: string;
   public startDate?: Date;
   public endDate?: Date;
-  public columns?: string[];
+  public columns?: BudgetColumn[];
   public importColumnsUrl?: string;
 
   constructor(data: Partial<IBudget>) {
@@ -23,7 +24,7 @@ export class Budget extends Model<IBudget> {
     this.name = data.name;
     this.startDate = data.start_date ? new Date(data.start_date) : undefined;
     this.endDate = data.end_date ? new Date(data.end_date) : undefined;
-    this.columns = [...data.columns || []];
+    this.columns = data.columns?.map(column => new BudgetColumn(column)) || [];
     this.importColumnsUrl = data.import_columns;
   }
 

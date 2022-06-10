@@ -1,8 +1,9 @@
 import {IModel, Model} from '../../../models/model';
+import { Category, ICategory } from "./category";
 
 export interface IBudgetItem extends IModel {
   name: string;
-  category?: string;
+  category?: ICategory | number;
   column: string;
   amount: number;
   order: number;
@@ -10,7 +11,7 @@ export interface IBudgetItem extends IModel {
 
 export class BudgetItem extends Model<IBudgetItem> {
   public name!: string;
-  public category?: string;
+  public category?: Category;
   public column?: string;
   public amount!: number;
   public order?: number;
@@ -26,7 +27,7 @@ export class BudgetItem extends Model<IBudgetItem> {
       name: this.name,
       amount: this.amount,
       order: this.order,
-      category: this.category,
+      category: this.category?.id,
       column: this.column,
     };
   }
@@ -35,7 +36,7 @@ export class BudgetItem extends Model<IBudgetItem> {
     this.name = data.name!;
     this.amount = data.amount || 0;
     this.order = data.order;
-    this.category = data.category;
+    this.category = data.category ? new Category(data.category as ICategory) : undefined;
     this.column = data.column;
   }
 }

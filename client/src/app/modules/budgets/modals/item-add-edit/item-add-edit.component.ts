@@ -3,7 +3,7 @@ import { FormModal } from '../../../../modals/form-modal/form-modal';
 import { BudgetItem } from '../../models/budget-item';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
-import { Category } from '../../models/category';
+import { Category, ICategory } from '../../models/category';
 import { CategoryService } from '../../services/category.service';
 
 @Component({
@@ -41,7 +41,7 @@ export class ItemAddEditComponent extends FormModal<BudgetItem> {
       id: this.originalModel?.id,
       name: name,
       amount: newAmount,
-      category: category ? category.url : undefined,
+      category: category?.serialise() as ICategory ?? undefined,
     });
   }
 
@@ -54,9 +54,7 @@ export class ItemAddEditComponent extends FormModal<BudgetItem> {
       mode,
     });
     if (model.category) {
-      this.categoryService.getOne(model.category).subscribe((category) => {
-        this.form.patchValue({ category });
-      });
+      this.form.patchValue({ category: model.category });
     }
   }
 }

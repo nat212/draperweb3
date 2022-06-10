@@ -1,9 +1,10 @@
 import {IModel, Model} from '../../../models/model';
+import { BudgetItem, IBudgetItem } from "./budget-item";
 
 export interface IBudgetColumn extends IModel {
   name: string;
   budget?: string;
-  items?: string[];
+  items?: IBudgetItem[];
   summary?: string;
   breakdown?: string;
 }
@@ -18,7 +19,7 @@ export class BudgetColumn extends Model<IBudgetColumn> {
   public name!: string;
   public budget?: string;
   public budgetId?: number;
-  public items!: string[];
+  public items!: BudgetItem[];
   public summary?: string;
   public breakdown?: string;
 
@@ -36,7 +37,7 @@ export class BudgetColumn extends Model<IBudgetColumn> {
   setData(data: Partial<IBudgetColumn>): void {
     this.name = data.name!;
     this.budget = data.budget;
-    this.items = data.items || [];
+    this.items = data.items?.map(item => new BudgetItem(item)) ?? [];
     this.breakdown = data.breakdown;
     this.summary = data.summary;
   }

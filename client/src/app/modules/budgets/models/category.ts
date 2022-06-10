@@ -20,6 +20,8 @@ export class Category extends Model<ICategory> {
       name: this.name,
       description: this.description,
       icon: this.icon,
+      id: this.id,
+      url: this.url,
     };
   }
 

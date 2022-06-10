@@ -21,7 +21,8 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { CategoryAddEditComponent } from './modals/category-add-edit/category-add-edit.component';
 import { AutocompleteModule } from '../widgets/autocomplete/autocomplete.module';
 import { AppFormsModule } from '../forms/forms.module';
-import { NgSelectModule } from "@ng-select/ng-select";
+import { NgSelectModule } from '@ng-select/ng-select';
+import { BudgetImportComponent } from './pages/budget-import/budget-import.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { NgSelectModule } from "@ng-select/ng-select";
     ColumnDetailComponent,
     ItemAddEditComponent,
     CategoryAddEditComponent,
+    BudgetImportComponent,
   ],
   imports: [
     CommonModule,
