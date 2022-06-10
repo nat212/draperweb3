@@ -26,10 +26,13 @@ class Budget(models.Model):
     def import_columns(
         self, budget: Budget, columns: List[int], items: Dict[int, List[int]]
     ) -> Budget:
+        print(columns)
+        print(items)
         for c in budget.columns.filter(pk__in=columns):
-            column = self.columns.create(**dict(c))
-            for i in c.items.filter(pk__in=items[c.id]):
-                column.items.create(**dict(i))
+            column = self.columns.create(**c.import_serialisation())
+            for i in c.items.filter(pk__in=items[str(c.id)]):
+                column.items.create(**i.import_serialisation())
+        self.save()
         return self
 
     def __str__(self) -> str:
@@ -70,6 +73,11 @@ class BudgetColumn(models.Model):
     def __str__(self) -> str:
         return f"{self.name} ({self.budget.name})"
 
+    def import_serialisation(self) -> dict:
+        return dict(
+            name=self.name,
+        )
+
     class Meta:
         ordering = ["budget__name", "name"]
 
@@ -83,6 +91,14 @@ class BudgetItem(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     amount = models.FloatField(default=0.0, blank=False, null=False)
     order = models.PositiveIntegerField(default=0, blank=True, null=False)
+
+    def import_serialisation(self) -> dict:
+        return dict(
+            name=self.name,
+            category=self.category,
+            amount=self.amount,
+            order=self.order,
+        )
 
     def save(self, *args, **kwargs):
         # Set order on first create

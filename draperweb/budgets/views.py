@@ -43,7 +43,10 @@ class BudgetViewSet(viewsets.ModelViewSet):
     def import_columns(self, request: Request, *args, **kwargs):
         """Import another budget's columns into this budget."""
         budget: Budget = self.get_object()
-        serializer = BudgetImportSerializer(data=request.data)
+        serializer = BudgetImportSerializer(
+            data=request.data,
+            context=self.get_serializer_context(),
+        )
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -52,7 +55,9 @@ class BudgetViewSet(viewsets.ModelViewSet):
             serializer.validated_data["columns"],
             serializer.validated_data["items"],
         )
-        return Response(BudgetSerializer(budget).data)
+        return Response(
+            BudgetSerializer(budget, context=self.get_serializer_context()).data
+        )
 
 
 class BudgetColumnViewSet(viewsets.ModelViewSet):

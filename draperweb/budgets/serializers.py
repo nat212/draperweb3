@@ -1,6 +1,8 @@
 from rest_framework import serializers
+from rest_framework.relations import PrimaryKeyRelatedField
 
 from draperweb.budgets.models import Budget, BudgetColumn, BudgetItem, Category
+from draperweb.fields import RelatedModelField
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -9,26 +11,7 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ("url", "id", "name", "description", "icon")
 
 
-class BudgetSerializer(serializers.HyperlinkedModelSerializer):
-    columns = serializers.HyperlinkedRelatedField(
-        many=True, view_name="budgetcolumn-detail", read_only=True
-    )
-    import_columns = serializers.HyperlinkedIdentityField(view_name="budget-import")
-
-    class Meta:
-        model = Budget
-        fields = (
-            "url",
-            "id",
-            "name",
-            "start_date",
-            "end_date",
-            "columns",
-            "import_columns",
-        )
-
-
-class BudgetImportSerializer(serializers.BaseSerializer):
+class BudgetImportSerializer(serializers.Serializer):
     budget = serializers.HyperlinkedRelatedField(
         queryset=Budget.objects.all(), view_name="budget-detail"
     )
@@ -38,10 +21,22 @@ class BudgetImportSerializer(serializers.BaseSerializer):
     )
 
 
-class BudgetColumnSerializer(serializers.HyperlinkedModelSerializer):
-    items = serializers.HyperlinkedRelatedField(
-        many=True, view_name="budgetitem-detail", read_only=True
+class BudgetItemSerializer(serializers.HyperlinkedModelSerializer):
+    column = serializers.HyperlinkedRelatedField(
+        many=False,
+        view_name="budgetcolumn-detail",
+        read_only=False,
+        queryset=BudgetColumn.objects.all(),
     )
+    category = RelatedModelField(CategorySerializer, queryset=Category.objects.all())
+
+    class Meta:
+        model = BudgetItem
+        fields = ("id", "url", "name", "category", "column", "amount", "order")
+
+
+class BudgetColumnSerializer(serializers.HyperlinkedModelSerializer):
+    items = BudgetItemSerializer(many=True, read_only=True)
     budget = serializers.HyperlinkedRelatedField(
         view_name="budget-detail",
         read_only=False,
@@ -60,14 +55,18 @@ class BudgetColumnSerializer(serializers.HyperlinkedModelSerializer):
         fields = ("url", "id", "name", "budget", "items", "summary", "breakdown")
 
 
-class BudgetItemSerializer(serializers.HyperlinkedModelSerializer):
-    column = serializers.HyperlinkedRelatedField(
-        many=False,
-        view_name="budgetcolumn-detail",
-        read_only=False,
-        queryset=BudgetColumn.objects.all(),
-    )
+class BudgetSerializer(serializers.HyperlinkedModelSerializer):
+    columns = BudgetColumnSerializer(many=True, read_only=True)
+    import_columns = serializers.HyperlinkedIdentityField(view_name="budget-import")
 
     class Meta:
-        model = BudgetItem
-        fields = ("id", "url", "name", "category", "column", "amount", "order")
+        model = Budget
+        fields = (
+            "url",
+            "id",
+            "name",
+            "start_date",
+            "end_date",
+            "columns",
+            "import_columns",
+        )
