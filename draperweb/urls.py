@@ -10,4 +10,5 @@ urlpatterns = [
     path("api/auth/", include("rest_framework.urls")),
     path("api/social/", include("social_django.urls", namespace="api/social")),
     path("admin/", admin.site.urls),
+    path("api/login/", include("rest_social_auth.urls_jwt_pair")),
 ]

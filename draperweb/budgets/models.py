@@ -26,8 +26,6 @@ class Budget(models.Model):
     def import_columns(
         self, budget: Budget, columns: List[int], items: Dict[int, List[int]]
     ) -> Budget:
-        print(columns)
-        print(items)
         for c in budget.columns.filter(pk__in=columns):
             column = self.columns.create(**c.import_serialisation())
             for i in c.items.filter(pk__in=items[str(c.id)]):
