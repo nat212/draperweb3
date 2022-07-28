@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "draperweb.budgets",
     "social_django",
+    "rest_social_auth",
     "rest_framework_filters",
     "crispy_forms",
 ]

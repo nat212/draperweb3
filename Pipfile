@@ -16,6 +16,8 @@ psycopg2-binary = "*"
 social-auth-app-django = "*"
 djangorestframework-filters = "==1.0.0.dev2"
 django-crispy-forms = "*"
+rest-social-auth = "*"
+djangorestframework-simplejwt = "*"
 
 [dev-packages]
 flake8 = "*"
