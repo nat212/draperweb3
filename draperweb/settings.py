@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 import os
+from datetime import timedelta
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -63,6 +64,7 @@ INSTALLED_APPS = [
     "draperweb.budgets",
     "social_django",
     "rest_social_auth",
+    "rest_framework_simplejwt",
     "rest_framework_filters",
     "crispy_forms",
 ]
@@ -150,12 +152,13 @@ USE_TZ = True
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 REST_FRAMEWORK = {
-    "DEFAULT_PAGINATION_CLASS": "draperweb.pagination.IncludePageSizePagination",
-    "PAGE_SIZE": 10,
     "DEFAULT_FILTER_BACKENDS": [
         "django_filters.rest_framework.DjangoFilterBackend",
         "rest_framework.filters.SearchFilter",
     ],
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
 }
 
 SOCIAL_AUTH_JSONFIELD_ENABLED = True
@@ -168,3 +171,6 @@ SOCIAL_AUTH_NEXTCLOUD_KEY = os.getenv("SOCIAL_AUTH_NEXTCLOUD_KEY")
 SOCIAL_AUTH_NEXTCLOUD_SECRET = os.getenv("SOCIAL_AUTH_NEXTCLOUD_SECRET")
 
 DRAPERWEB_BASE_URL = os.getenv("DRAPERWEB_BASE_URL", "https://box.draper.net.za/cloud")
+
+ACCESS_TOKEN_LIFETIME = timedelta(days=1)
+REFRESH_TOKEN_LIFETIME = timedelta(days=30)

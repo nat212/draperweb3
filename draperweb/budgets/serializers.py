@@ -32,7 +32,16 @@ class BudgetItemSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = BudgetItem
-        fields = ("id", "url", "name", "category", "column", "amount", "order")
+        fields = (
+            "id",
+            "url",
+            "name",
+            "category",
+            "column",
+            "amount",
+            "order",
+            "created_at",
+        )
 
 
 class BudgetColumnSerializer(serializers.HyperlinkedModelSerializer):
@@ -52,7 +61,16 @@ class BudgetColumnSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = BudgetColumn
-        fields = ("url", "id", "name", "budget", "items", "summary", "breakdown")
+        fields = (
+            "url",
+            "id",
+            "name",
+            "budget",
+            "items",
+            "summary",
+            "breakdown",
+            "created_at",
+        )
 
 
 class BudgetSerializer(serializers.HyperlinkedModelSerializer):
@@ -69,4 +87,5 @@ class BudgetSerializer(serializers.HyperlinkedModelSerializer):
             "end_date",
             "columns",
             "import_columns",
+            "created_at",
         )

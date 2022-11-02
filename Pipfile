@@ -17,7 +17,7 @@ social-auth-app-django = "*"
 djangorestframework-filters = "==1.0.0.dev2"
 django-crispy-forms = "*"
 rest-social-auth = "*"
-djangorestframework-simplejwt = "*"
+djangorestframework-simplejwt = {extras = ["crypto"], version = "*"}
 
 [dev-packages]
 flake8 = "*"
