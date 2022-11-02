@@ -20,8 +20,12 @@ rest-social-auth = "*"
 djangorestframework-simplejwt = {extras = ["crypto"], version = "*"}
 
 [dev-packages]
-flake8 = "*"
-black = "*"
+flake8 = {version = "*"}
+black = {version = "*"}
+django-stubs = {extras = ["compatible-mypy"], version = "*"}
+mypy = {version = "*"}
+isort = {version = "*"}
+pylint = {version = "*"}
 
 [requires]
 python_version = "3.10"

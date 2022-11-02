@@ -1,5 +1,4 @@
 from rest_framework import serializers
-from rest_framework.relations import PrimaryKeyRelatedField
 
 from draperweb.budgets.models import Budget, BudgetColumn, BudgetItem, Category
 from draperweb.fields import RelatedModelField

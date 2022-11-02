@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     "django_filters",
     "rest_framework",
     "draperweb.budgets",
+    "draperweb.wishlists",
     "social_django",
     "rest_social_auth",
     "rest_framework_simplejwt",
