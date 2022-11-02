@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BudgetService } from '../../services/budget.service';
 import { combineLatest, debounceTime, Observable, pluck, startWith, Subject, switchMap, tap } from 'rxjs';
 import { Budget } from '../../models/budget';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { BsDaterangepickerConfig } from 'ngx-bootstrap/datepicker';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BudgetAddEditComponent } from '../../modals/budget-add-edit/budget-add-edit.component';
@@ -21,8 +21,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class BudgetListComponent implements OnInit {
   public budgets$!: Observable<Budget[]>;
   public budgetResponse$!: Observable<PaginatedResponse<Budget>>;
-  public searchControl!: FormControl;
-  public filterForm!: FormGroup;
+  public searchControl!: UntypedFormControl;
+  public filterForm!: UntypedFormGroup;
   public filtersCollapsed = true;
   public loading = false;
 
@@ -53,7 +53,7 @@ export class BudgetListComponent implements OnInit {
 
   public categoryResponse$!: Observable<PaginatedResponse<Category>>;
   public categories$!: Observable<Category[]>;
-  public categorySearchControl!: FormControl;
+  public categorySearchControl!: UntypedFormControl;
 
   public categoryLoading = false;
   private categoryRefresh$!: Subject<void>;
@@ -75,7 +75,7 @@ export class BudgetListComponent implements OnInit {
 
   constructor(
     private readonly service: BudgetService,
-    private readonly formBuilder: FormBuilder,
+    private readonly formBuilder: UntypedFormBuilder,
     private readonly bsModalService: BsModalService,
     private readonly alert: AlertService,
     private readonly categoryService: CategoryService,
@@ -87,7 +87,7 @@ export class BudgetListComponent implements OnInit {
     this.loading = true;
     this.refresh$ = new Subject<void>();
     this.page$ = new Subject<number>();
-    this.searchControl = new FormControl('');
+    this.searchControl = new UntypedFormControl('');
     this.filterForm = this.formBuilder.group({
       year: [null],
       date: [null],
@@ -104,7 +104,7 @@ export class BudgetListComponent implements OnInit {
     );
     this.budgets$ = this.budgetResponse$.pipe(pluck('results'));
 
-    this.categorySearchControl = new FormControl('');
+    this.categorySearchControl = new UntypedFormControl('');
     this.categoryPage$ = new Subject<number>();
     this.categoryRefresh$ = new Subject();
     this.categoryResponse$ = combineLatest([

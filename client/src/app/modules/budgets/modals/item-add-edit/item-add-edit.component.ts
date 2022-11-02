@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormModal } from '../../../../modals/form-modal/form-modal';
 import { BudgetItem } from '../../models/budget-item';
-import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { AbstractControl, UntypedFormBuilder, UntypedFormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Category, ICategory } from '../../models/category';
 import { CategoryService } from '../../services/category.service';
@@ -12,7 +12,7 @@ import { CategoryService } from '../../services/category.service';
   styleUrls: ['./item-add-edit.component.scss'],
 })
 export class ItemAddEditComponent extends FormModal<BudgetItem> {
-  constructor(formBuilder: FormBuilder, modalRef: BsModalRef, public readonly categoryService: CategoryService) {
+  constructor(formBuilder: UntypedFormBuilder, modalRef: BsModalRef, public readonly categoryService: CategoryService) {
     super(formBuilder, modalRef);
   }
 
@@ -23,7 +23,7 @@ export class ItemAddEditComponent extends FormModal<BudgetItem> {
     return control.value instanceof Category ? null : { invalidCategory: true };
   }
 
-  protected buildForm(): FormGroup {
+  protected buildForm(): UntypedFormGroup {
     return this.formBuilder.group({
       name: ['', Validators.required],
       amount: [null, Validators.compose([Validators.required, Validators.min(0)])],

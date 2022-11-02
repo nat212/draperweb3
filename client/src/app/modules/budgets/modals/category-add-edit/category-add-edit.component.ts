@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormModal } from '../../../../modals/form-modal/form-modal';
 import { Category } from '../../models/category';
-import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { AbstractControl, UntypedFormBuilder, UntypedFormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { IBsIcon, IconService } from '../../../../services/icon.service';
 
@@ -33,7 +33,7 @@ export class CategoryAddEditComponent extends FormModal<Category> {
     .filter((key) => key !== 'default')
     .map((key) => new Icon(`bi-${key}`, this.iconService.bsIcons[key]));
 
-  constructor(formBuilder: FormBuilder, modalRef: BsModalRef, private readonly iconService: IconService) {
+  constructor(formBuilder: UntypedFormBuilder, modalRef: BsModalRef, private readonly iconService: IconService) {
     super(formBuilder, modalRef);
   }
 
@@ -49,7 +49,7 @@ export class CategoryAddEditComponent extends FormModal<Category> {
     }
   }
 
-  protected buildForm(): FormGroup {
+  protected buildForm(): UntypedFormGroup {
     return this.formBuilder.group({
       name: ['', Validators.required],
       description: [''],

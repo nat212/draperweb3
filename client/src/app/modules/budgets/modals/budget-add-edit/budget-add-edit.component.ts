@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Budget } from '../../models/budget';
 import { BsModalRef } from 'ngx-bootstrap/modal';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { FormModal } from '../../../../modals/form-modal/form-modal';
 
 @Component({
@@ -10,7 +10,7 @@ import { FormModal } from '../../../../modals/form-modal/form-modal';
   styleUrls: ['./budget-add-edit.component.scss'],
 })
 export class BudgetAddEditComponent extends FormModal<Budget> {
-  constructor(modalRef: BsModalRef, formBuilder: FormBuilder) {
+  constructor(modalRef: BsModalRef, formBuilder: UntypedFormBuilder) {
     super(formBuilder, modalRef);
   }
 
@@ -18,7 +18,7 @@ export class BudgetAddEditComponent extends FormModal<Budget> {
     this.form.patchValue({ date: null });
   }
 
-  protected buildForm(): FormGroup {
+  protected buildForm(): UntypedFormGroup {
     return this.formBuilder.group({
       name: ['', Validators.required],
       date: [null, Validators.required],

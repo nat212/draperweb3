@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { BudgetColumn } from '../../models/budget-column';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { FormModal } from '../../../../modals/form-modal/form-modal';
 
 @Component({
@@ -10,7 +10,7 @@ import { FormModal } from '../../../../modals/form-modal/form-modal';
   styleUrls: ['./column-add-edit.component.scss'],
 })
 export class ColumnAddEditComponent extends FormModal<BudgetColumn> {
-  protected buildForm(): FormGroup {
+  protected buildForm(): UntypedFormGroup {
     return this.formBuilder.group({
       name: ['', Validators.required],
     });
@@ -24,7 +24,7 @@ export class ColumnAddEditComponent extends FormModal<BudgetColumn> {
     return new BudgetColumn({ name: this.form.value.name });
   }
 
-  constructor(formBuilder: FormBuilder, modalRef: BsModalRef) {
+  constructor(formBuilder: UntypedFormBuilder, modalRef: BsModalRef) {
     super(formBuilder, modalRef);
   }
 }
